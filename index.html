@@ -109,6 +109,26 @@
             border-bottom: 4px solid var(--white);
         }
 
+        /* Map control button */
+        .map-control-btn {
+            position: absolute;
+            bottom: 34px;
+            right: 10px;
+            background: var(--black);
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 8px 12px;
+            z-index: 10;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .map-control-btn:hover {
+            background: var(--accent);
+            color: var(--black);
+        }
+
         /* Bookstore list section */
         .bookstore-list {
             padding: 2rem;
@@ -430,6 +450,7 @@
     <div class="container">
         <div class="map-section">
             <div id="map"></div>
+            <button id="scroll-zoom-toggle" class="map-control-btn">Enable Scroll Zoom</button>
         </div>
 
         <div class="bookstore-list">
@@ -1482,6 +1503,22 @@
 
         map.scrollZoom.disable();
         map.addControl(new mapboxgl.NavigationControl());
+
+        // Add scroll zoom toggle functionality
+        const scrollZoomToggle = document.getElementById('scroll-zoom-toggle');
+        let scrollZoomEnabled = false;
+
+        scrollZoomToggle.addEventListener('click', () => {
+            if (scrollZoomEnabled) {
+                map.scrollZoom.disable();
+                scrollZoomToggle.textContent = 'Enable Scroll Zoom';
+                scrollZoomEnabled = false;
+            } else {
+                map.scrollZoom.enable();
+                scrollZoomToggle.textContent = 'Disable Scroll Zoom';
+                scrollZoomEnabled = true;
+            }
+        });
 
         // Add this function to handle highlighting
         function highlightBookstore(card) {
