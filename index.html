@@ -1338,6 +1338,13 @@
 
             // Move click handler to the button instead of the card
             mapButton.addEventListener('click', () => {
+                // Close all open popups first
+                markers.forEach(m => {
+                    if (m.getPopup().isOpen()) {
+                        m.togglePopup();
+                    }
+                });
+
                 map.flyTo({
                     center: coords,
                     zoom: 15,
