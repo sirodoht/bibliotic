@@ -273,6 +273,113 @@
         footer a {
             color: var(--earth1);
         }
+
+        /* Filter controls styling */
+        .filter-container {
+            background: var(--black);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--accent);
+        }
+
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--accent);
+            background: var(--black);
+            color: var(--white);
+            min-width: 250px;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            background: var(--black);
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            color: var(--black);
+        }
+
+        .sort-options select {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--accent);
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .location-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .location-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .location-btn {
+            background: var(--black);
+            color: var(--earth1);
+            border: 2px solid var(--earth1);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .location-btn:hover, .location-btn.active {
+            background: var(--earth1);
+            color: var(--black);
+        }
+
+        @media (max-width: 768px) {
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+        }
+
+        /* Bookstore count and no results styling */
+        .bookstore-count {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--earth1);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: var(--white);
+        }
     </style>
 </head>
 <body>
@@ -294,7 +401,6 @@
                 <div class="tag-container">
                     <span class="tag">political books</span>
                     <span class="tag">queer books</span>
-                    <span class="tag">South London</span>
                 </div>
                 <div class="reviews-section">
                     <div class="reviews-container">
@@ -312,7 +418,6 @@
                 <a href="https://maps.app.goo.gl/DR7d3kF3Ack3AD3z6" target="_blank" class="google-maps-link">Open in Google Maps →</a>
                 <div class="tag-container">
                     <span class="tag">rare books</span>
-                    <span class="tag">South London</span>
                 </div>
                 <div class="reviews-section">
                     <div class="reviews-container">
@@ -330,7 +435,6 @@
                 <a href="https://maps.app.goo.gl/U2JosqrBQopGixFq5" target="_blank" class="google-maps-link">Open in Google Maps →</a>
                 <div class="tag-container">
                     <span class="tag">indie books</span>
-                    <span class="tag">South London</span>
                 </div>
                 <div class="reviews-section">
                     <div class="reviews-container">
@@ -348,7 +452,6 @@
                 <a href="https://maps.app.goo.gl/YRQKjWbpLbFoHpwQA" target="_blank" class="google-maps-link">Open in Google Maps →</a>
                 <div class="tag-container">
                     <span class="tag">new books</span>
-                    <span class="tag">South London</span>
                 </div>
                 <div class="reviews-section">
                     <div class="reviews-container">
@@ -367,7 +470,6 @@
                 <div class="tag-container">
                     <span class="tag">second hand</span>
                     <span class="tag">indie books</span>
-                    <span class="tag">South London</span>
                 </div>
                 <div class="reviews-section">
                     <div class="reviews-container">
@@ -386,7 +488,6 @@
                 <div class="tag-container">
                     <span class="tag">new books</span>
                     <span class="tag">second hand</span>
-                    <span class="tag">East London</span>
                 </div>
                 <div class="reviews-section">
                     <div class="reviews-container">
@@ -1024,6 +1125,7 @@
             zoom: 12
         });
 
+        // Define marker HTML template first so it's available for createCustomMarker
         const markerHtml = `
             <div style="
                 width: 30px;
@@ -1036,22 +1138,42 @@
             "></div>
         `;
 
+        // Store all bookstore cards and their data for filtering
+        const bookstores = [];
+        const markers = [];
+
         document.querySelectorAll('.bookstore-card').forEach(card => {
             const coords = JSON.parse(card.dataset.coords);
+            const name = card.querySelector('.bookstore-name').textContent;
+            const address = card.querySelector('.bookstore-address').textContent;
+            const tags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase());
 
+            // Create marker
             const marker = new mapboxgl.Marker({
                 element: createCustomMarker()
             })
             .setLngLat(coords)
             .setPopup(new mapboxgl.Popup().setHTML(`
                 <h3 style="color: #54442B; font-size: 1.2rem; margin-bottom: 0.5rem;">
-                    ${card.querySelector('.bookstore-name').textContent}
+                    ${name}
                 </h3>
                 <p style="color: #A47E3B; font-family: monospace;">
-                    ${card.querySelector('.bookstore-address').textContent}
+                    ${address}
                 </p>
             `))
             .addTo(map);
+
+            markers.push(marker);
+
+            // Store bookstore data
+            bookstores.push({
+                element: card,
+                name: name,
+                address: address,
+                tags: tags,
+                coords: coords,
+                marker: marker
+            });
 
             card.addEventListener('click', () => {
                 map.flyTo({
@@ -1068,6 +1190,205 @@
             el.innerHTML = markerHtml;
             return el.firstElementChild;
         }
+
+        // Add filter controls to the page
+        const mapSection = document.querySelector('.map-section');
+        const filterContainer = document.createElement('div');
+        filterContainer.className = 'filter-container';
+        filterContainer.innerHTML = `
+            <div class="filter-controls">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search bookstores...">
+                </div>
+                <div class="filter-tags">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="new books">New Books</button>
+                    <button class="filter-btn" data-filter="second hand">Second Hand</button>
+                    <button class="filter-btn" data-filter="rare books">Rare Books</button>
+                    <button class="filter-btn" data-filter="queer books">Queer Books</button>
+                    <button class="filter-btn" data-filter="political books">Political Books</button>
+                </div>
+                <div class="sort-options">
+                    <select id="sort-select">
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+        `;
+
+        mapSection.insertAdjacentElement('afterend', filterContainer);
+
+        // Filter functionality
+        const searchInput = document.getElementById('search-input');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const sortSelect = document.getElementById('sort-select');
+
+        let currentFilter = 'all';
+        let currentSort = 'name-asc';
+        let searchTerm = '';
+        let currentLocation = 'all';
+
+        // Add location-based filtering
+        const locationFilters = document.createElement('div');
+        locationFilters.className = 'location-filters';
+        locationFilters.innerHTML = `
+            <div class="location-buttons">
+                <button class="location-btn active" data-area="all">All Areas</button>
+                <button class="location-btn" data-area="east">East London</button>
+                <button class="location-btn" data-area="west">West London</button>
+                <button class="location-btn" data-area="north">North London</button>
+                <button class="location-btn" data-area="south">South London</button>
+                <button class="location-btn" data-area="central">Central London</button>
+            </div>
+        `;
+
+        filterContainer.querySelector('.filter-controls').appendChild(locationFilters);
+
+        const locationButtons = document.querySelectorAll('.location-btn');
+
+        locationButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                locationButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentLocation = button.dataset.area;
+                updateBookstoreList();
+            });
+        });
+
+        // Define the updateBookstoreList function only once with all filtering logic
+        function updateBookstoreList() {
+            const bookstoreList = document.querySelector('.bookstore-list');
+
+            // Clear all bookstores from the list
+            bookstoreList.innerHTML = '';
+
+            // Filter bookstores
+            const filteredBookstores = bookstores.filter(bookstore => {
+                // Filter by tag
+                const tagMatch = currentFilter === 'all' || bookstore.tags.includes(currentFilter);
+
+                // Filter by search term
+                const searchMatch = searchTerm === '' ||
+                    bookstore.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    bookstore.address.toLowerCase().includes(searchTerm.toLowerCase());
+
+                // Filter by location
+                const locationMatch = currentLocation === 'all' ||
+                    (currentLocation === 'east' && (
+                     bookstore.address.toLowerCase().includes('e1') ||
+                     bookstore.address.toLowerCase().includes('e2') ||
+                     bookstore.address.toLowerCase().includes('e3') ||
+                     bookstore.address.toLowerCase().includes('e5') ||
+                     bookstore.address.toLowerCase().includes('e8') ||
+                     bookstore.address.toLowerCase().includes('e14'))) ||
+                    (currentLocation === 'west' && (
+                     bookstore.address.toLowerCase().includes('w1') ||
+                     bookstore.address.toLowerCase().includes('w2') ||
+                     bookstore.address.toLowerCase().includes('w6') ||
+                     bookstore.address.toLowerCase().includes('w8') ||
+                     bookstore.address.toLowerCase().includes('w11') ||
+                     bookstore.address.toLowerCase().includes('sw3') ||
+                     bookstore.address.toLowerCase().includes('sw6') ||
+                     bookstore.address.toLowerCase().includes('sw7'))) ||
+                    (currentLocation === 'north' && (
+                     bookstore.address.toLowerCase().includes('n1') ||
+                     bookstore.address.toLowerCase().includes('n5') ||
+                     bookstore.address.toLowerCase().includes('n10') ||
+                     bookstore.address.toLowerCase().includes('nw1') ||
+                     bookstore.address.toLowerCase().includes('nw3') ||
+                     bookstore.address.toLowerCase().includes('nw5') ||
+                     bookstore.address.toLowerCase().includes('nw6') ||
+                     bookstore.address.toLowerCase().includes('nw11'))) ||
+                    (currentLocation === 'south' && (
+                     bookstore.address.toLowerCase().includes('se1') ||
+                     bookstore.address.toLowerCase().includes('se3') ||
+                     bookstore.address.toLowerCase().includes('se5') ||
+                     bookstore.address.toLowerCase().includes('se8') ||
+                     bookstore.address.toLowerCase().includes('se14') ||
+                     bookstore.address.toLowerCase().includes('se22') ||
+                     bookstore.address.toLowerCase().includes('sw12'))) ||
+                    (currentLocation === 'central' && (
+                     bookstore.address.toLowerCase().includes('wc1') ||
+                     bookstore.address.toLowerCase().includes('wc2') ||
+                     bookstore.address.toLowerCase().includes('ec1') ||
+                     bookstore.address.toLowerCase().includes('ec2') ||
+                     bookstore.address.toLowerCase().includes('ec3') ||
+                     bookstore.address.toLowerCase().includes('ec4')));
+
+                // Update marker visibility
+                if (tagMatch && searchMatch && locationMatch) {
+                    bookstore.marker.getElement().style.display = 'block';
+                } else {
+                    bookstore.marker.getElement().style.display = 'none';
+                }
+
+                return tagMatch && searchMatch && locationMatch;
+            });
+
+            // Sort bookstores
+            filteredBookstores.sort((a, b) => {
+                if (currentSort === 'name-asc') {
+                    return a.name.localeCompare(b.name);
+                } else if (currentSort === 'name-desc') {
+                    return b.name.localeCompare(a.name);
+                }
+                return 0;
+            });
+
+            // Add filtered and sorted bookstores to the list
+            filteredBookstores.forEach(bookstore => {
+                bookstoreList.appendChild(bookstore.element);
+            });
+
+            // Update count
+            const countElement = document.createElement('div');
+            countElement.className = 'bookstore-count';
+            countElement.textContent = `Showing ${filteredBookstores.length} of ${bookstores.length} bookstores`;
+            countElement.style.textAlign = 'center';
+            countElement.style.marginBottom = '1rem';
+            countElement.style.color = 'var(--earth1)';
+
+            if (bookstoreList.previousElementSibling && bookstoreList.previousElementSibling.classList.contains('bookstore-count')) {
+                bookstoreList.previousElementSibling.remove();
+            }
+
+            bookstoreList.insertAdjacentElement('beforebegin', countElement);
+
+            // If no results, show message
+            if (filteredBookstores.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.textContent = 'No bookstores match your criteria. Try adjusting your filters.';
+                noResults.style.textAlign = 'center';
+                noResults.style.padding = '2rem';
+                noResults.style.color = 'var(--white)';
+                bookstoreList.appendChild(noResults);
+            }
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            updateBookstoreList();
+        });
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentFilter = button.dataset.filter;
+                updateBookstoreList();
+            });
+        });
+
+        sortSelect.addEventListener('change', (e) => {
+            currentSort = e.target.value;
+            updateBookstoreList();
+        });
+
+        // Initial update
+        updateBookstoreList();
 
         map.scrollZoom.disable();
         map.addControl(new mapboxgl.NavigationControl());
