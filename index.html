@@ -1290,6 +1290,17 @@
                     zoom: 15,
                     essential: true
                 });
+
+                // Scroll map into view on mobile
+                if (isTouchDevice()) {
+                    setTimeout(() => {
+                        document.querySelector('.map-section').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 300); // Short delay to sync with map movement
+                }
+
                 marker.togglePopup();
             });
         });
