@@ -1508,17 +1508,29 @@
         const scrollZoomToggle = document.getElementById('scroll-zoom-toggle');
         let scrollZoomEnabled = false;
 
-        scrollZoomToggle.addEventListener('click', () => {
-            if (scrollZoomEnabled) {
-                map.scrollZoom.disable();
-                scrollZoomToggle.textContent = 'Enable Scroll Zoom';
-                scrollZoomEnabled = false;
-            } else {
-                map.scrollZoom.enable();
-                scrollZoomToggle.textContent = 'Disable Scroll Zoom';
-                scrollZoomEnabled = true;
-            }
-        });
+        // Check if device has touch capability
+        const isTouchDevice = () => {
+            return (('ontouchstart' in window) ||
+                   (navigator.maxTouchPoints > 0) ||
+                   (navigator.msMaxTouchPoints > 0));
+        };
+
+        // Hide the button on touch devices
+        if (isTouchDevice()) {
+            scrollZoomToggle.style.display = 'none';
+        } else {
+            scrollZoomToggle.addEventListener('click', () => {
+                if (scrollZoomEnabled) {
+                    map.scrollZoom.disable();
+                    scrollZoomToggle.textContent = 'Enable Scroll Zoom';
+                    scrollZoomEnabled = false;
+                } else {
+                    map.scrollZoom.enable();
+                    scrollZoomToggle.textContent = 'Disable Scroll Zoom';
+                    scrollZoomEnabled = true;
+                }
+            });
+        }
 
         // Add this function to handle highlighting
         function highlightBookstore(card) {
