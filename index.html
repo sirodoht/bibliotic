@@ -292,12 +292,42 @@
             margin: 0 auto;
         }
 
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
         .search-box input {
             padding: 0.5rem 1rem;
             border: 2px solid var(--accent);
             background: var(--black);
             color: var(--white);
             min-width: 250px;
+        }
+
+        .clear-search-btn {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+        }
+
+        .clear-search-btn:hover {
+            color: var(--white);
+        }
+
+        .search-box input:not(:placeholder-shown) + .clear-search-btn {
+            display: block;
         }
 
         .filter-tags {
@@ -385,7 +415,7 @@
 <body>
     <header>
         <h1>Bibliotic</h1>
-        <p class="subtitle">Opinionated London Bookstore Reviews</p>
+        <p class="subtitle">Opinionated Reviews for London Bookstores</p>
     </header>
 
     <div class="container">
@@ -1199,14 +1229,15 @@
             <div class="filter-controls">
                 <div class="search-box">
                     <input type="text" id="search-input" placeholder="Search bookstores...">
+                    <button id="clear-search" class="clear-search-btn">×</button>
                 </div>
                 <div class="filter-tags">
                     <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="new books">New Books</button>
-                    <button class="filter-btn" data-filter="second hand">Second Hand</button>
-                    <button class="filter-btn" data-filter="rare books">Rare Books</button>
-                    <button class="filter-btn" data-filter="queer books">Queer Books</button>
-                    <button class="filter-btn" data-filter="political books">Political Books</button>
+                    <button class="filter-btn" data-filter="new books">new books</button>
+                    <button class="filter-btn" data-filter="second hand">second Hand</button>
+                    <button class="filter-btn" data-filter="rare books">rare books</button>
+                    <button class="filter-btn" data-filter="queer books">queer books</button>
+                    <button class="filter-btn" data-filter="political books">political books</button>
                 </div>
                 <div class="sort-options">
                     <select id="sort-select">
@@ -1368,9 +1399,18 @@
         }
 
         // Event listeners
+        const clearSearchBtn = document.getElementById('clear-search');
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            searchTerm = '';
+            updateBookstoreList();
+            searchInput.focus();
+        });
+
         searchInput.addEventListener('input', (e) => {
             searchTerm = e.target.value;
             updateBookstoreList();
+            clearSearchBtn.style.display = searchTerm ? 'block' : 'none';
         });
 
         filterButtons.forEach(button => {
