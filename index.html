@@ -410,6 +410,15 @@
             padding: 2rem;
             color: var(--white);
         }
+
+        .bookstore-card.highlighted {
+            transform: translateY(-10px);
+            border-left-color: var(--accent);
+            box-shadow:
+                -8px 8px 0 var(--earth1),
+                -16px 16px 0 var(--accent3);
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -1190,6 +1199,16 @@
                 <p style="color: #A47E3B; font-family: monospace;">
                     ${address}
                 </p>
+                <button class="view-details-btn" data-bookstore="${name}" style="
+                    background: #94A684;
+                    color: white;
+                    border: none;
+                    padding: 5px 10px;
+                    margin-top: 8px;
+                    cursor: pointer;
+                    font-size: 0.9rem;
+                    border-radius: 2px;
+                ">View details</button>
             `))
             .addTo(map);
 
@@ -1205,6 +1224,7 @@
                 marker: marker
             });
 
+            // Add click event to card
             card.addEventListener('click', () => {
                 map.flyTo({
                     center: coords,
@@ -1221,6 +1241,24 @@
             return el.firstElementChild;
         }
 
+        // Add a global click handler for the "View details" buttons in popups
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('view-details-btn')) {
+                const bookstoreName = e.target.getAttribute('data-bookstore');
+                const bookstore = bookstores.find(b => b.name === bookstoreName);
+
+                if (bookstore) {
+                    // Highlight the card
+                    highlightBookstore(bookstore.element);
+
+                    // Scroll to the card
+                    setTimeout(() => {
+                        bookstore.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
+            }
+        });
+
         // Add filter controls to the page
         const mapSection = document.querySelector('.map-section');
         const filterContainer = document.createElement('div');
@@ -1234,7 +1272,7 @@
                 <div class="filter-tags">
                     <button class="filter-btn active" data-filter="all">All</button>
                     <button class="filter-btn" data-filter="new books">new books</button>
-                    <button class="filter-btn" data-filter="second hand">second Hand</button>
+                    <button class="filter-btn" data-filter="second hand">second hand</button>
                     <button class="filter-btn" data-filter="rare books">rare books</button>
                     <button class="filter-btn" data-filter="queer books">queer books</button>
                     <button class="filter-btn" data-filter="political books">political books</button>
@@ -1290,6 +1328,13 @@
         // Define the updateBookstoreList function only once with all filtering logic
         function updateBookstoreList() {
             const bookstoreList = document.querySelector('.bookstore-list');
+
+            // Find any currently highlighted card
+            const highlightedCard = document.querySelector('.bookstore-card.highlighted');
+            let highlightedName = null;
+            if (highlightedCard) {
+                highlightedName = highlightedCard.querySelector('.bookstore-name').textContent;
+            }
 
             // Clear all bookstores from the list
             bookstoreList.innerHTML = '';
@@ -1370,6 +1415,11 @@
             // Add filtered and sorted bookstores to the list
             filteredBookstores.forEach(bookstore => {
                 bookstoreList.appendChild(bookstore.element);
+
+                // Re-apply highlight if this was the highlighted card
+                if (highlightedName && bookstore.name === highlightedName) {
+                    bookstore.element.classList.add('highlighted');
+                }
             });
 
             // Update count
@@ -1432,6 +1482,22 @@
 
         map.scrollZoom.disable();
         map.addControl(new mapboxgl.NavigationControl());
+
+        // Add this function to handle highlighting
+        function highlightBookstore(card) {
+            // Remove highlight from all cards
+            document.querySelectorAll('.bookstore-card').forEach(c => {
+                c.classList.remove('highlighted');
+            });
+
+            // Add highlight to this card
+            card.classList.add('highlighted');
+
+            // Remove highlight after a few seconds
+            setTimeout(() => {
+                card.classList.remove('highlighted');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
