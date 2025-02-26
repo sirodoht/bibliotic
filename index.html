@@ -180,13 +180,15 @@
         }
 
         .bookstore-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
             background: var(--white);
             color: var(--black);
             padding: 2rem;
             transform-origin: center;
             transition: all 0.3s ease;
             position: relative;
-            cursor: pointer;
             border-left: 8px solid var(--earth2);
         }
 
@@ -226,11 +228,12 @@
         }
 
         .google-maps-link {
+            display: block;
+            margin-top: 0.5rem;
             color: var(--earth3);
             text-decoration: none;
-            display: inline-block;
-            margin-top: 1rem;
             transition: color 0.3s ease;
+            margin: 0;
         }
 
         .google-maps-link:hover {
@@ -239,7 +242,6 @@
 
         /* Tags styling */
         .tag-container {
-            margin: 1rem 0;
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
@@ -256,10 +258,6 @@
         }
 
         /* Reviews styling */
-        .reviews-section {
-            margin: 1rem 0;
-        }
-
         .reviews-toggle {
             background: none;
             border: 2px solid var(--accent);
@@ -476,6 +474,30 @@
                 -8px 8px 0 var(--earth1),
                 -16px 16px 0 var(--accent3);
             transition: all 0.3s ease;
+        }
+
+        .view-on-map-btn {
+            display: block;
+            width: fit-content;
+            margin: 0 0 1rem 0;
+            background: var(--earth2);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .view-on-map-btn:hover {
+            background: var(--earth1);
+        }
+
+        /* Add button container styling */
+        .button-container {
+            margin-top: auto;
+            padding-top: 1rem;
         }
     </style>
 </head>
@@ -1283,24 +1305,50 @@
                 marker: marker
             });
 
-            // Add click event to card
-            card.addEventListener('click', () => {
+            // Add view on map button to card
+            const googleMapsLink = card.querySelector('.google-maps-link');
+            const mapButton = document.createElement('button');
+            mapButton.className = 'view-on-map-btn';
+            mapButton.textContent = 'Locate on Map';
+
+            // Create button container
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'button-container';
+
+            // Add buttons to container
+            buttonContainer.appendChild(mapButton);
+            if (googleMapsLink) {
+                card.removeChild(googleMapsLink); // Remove from original position
+                buttonContainer.appendChild(googleMapsLink);
+            }
+
+            // Add container to card
+            card.appendChild(buttonContainer);
+
+            // Move click handler to the button instead of the card
+            mapButton.addEventListener('click', () => {
                 map.flyTo({
                     center: coords,
                     zoom: 15,
                     essential: true
                 });
 
-                // Scroll map into view on mobile
+                // Remove highlight from all cards
+                document.querySelectorAll('.bookstore-card').forEach(c => {
+                    c.classList.remove('highlighted');
+                });
+
+                // Add highlight to this card
+                card.classList.add('highlighted');
+
                 if (isTouchDevice()) {
                     setTimeout(() => {
                         document.querySelector('.map-section').scrollIntoView({
                             behavior: 'smooth',
                             block: 'start'
                         });
-                    }, 300); // Short delay to sync with map movement
+                    }, 300);
                 }
-
                 marker.togglePopup();
             });
         });
