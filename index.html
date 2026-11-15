@@ -153,6 +153,16 @@
                 border-width: 3px;
                 z-index: 1;
             }
+
+            /* On touch screens, give each dot an invisible ~44px tap area */
+            @media (pointer: coarse) {
+                .custom-marker::after {
+                    content: "";
+                    position: absolute;
+                    inset: -17px;
+                    border-radius: 50%;
+                }
+            }
         </style>
     </head>
     <body>
