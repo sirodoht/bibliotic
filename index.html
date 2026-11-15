@@ -66,46 +66,12 @@
                 color: var(--text-muted);
             }
 
-            .card-actions {
-                display: flex;
-                gap: 0.75rem;
-                margin-top: 1.25rem;
-            }
-
-            .btn {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.375rem;
-                padding: 0.625rem 1rem;
-                font-size: 0.8125rem;
-                font-weight: 400;
-                border-radius: 6px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                text-decoration: none;
-                font-family: inherit;
-            }
-
-            .btn-primary {
-                background: var(--accent);
-                color: white;
-                border: 1px solid var(--accent);
-            }
-
-            .btn-primary:hover {
-                background: var(--accent-light);
-                border-color: var(--accent-light);
-            }
-
-            .btn-secondary {
-                background: var(--bg-secondary);
-                color: var(--text-secondary);
-                border: 1px solid var(--border);
-            }
-
-            .btn-secondary:hover {
-                background: var(--bg-tertiary);
-                border-color: var(--accent-pale);
+            .bookstore-link {
+                display: inline-block;
+                margin-top: 1rem;
+                font-size: 0.875rem;
+                color: var(--accent);
+                word-break: break-all;
             }
 
             /* Bookstore Card */
@@ -153,6 +119,16 @@
                 }
             }
 
+            /* Near me button */
+            .mapboxgl-ctrl-group button.mapboxgl-ctrl-geolocate {
+                width: 48px;
+                height: 48px;
+            }
+
+            .mapboxgl-ctrl-geolocate .mapboxgl-ctrl-icon {
+                background-size: 40px;
+            }
+
             /* Custom Marker */
             .custom-marker {
                 width: 22px;
@@ -160,17 +136,11 @@
                 background: var(--accent);
                 border: 2px solid white;
                 border-radius: 50% 50% 50% 0;
-                transform: rotate(-45deg);
                 cursor: pointer;
                 box-shadow: 0 2px 8px var(--shadow-strong);
-                transition: transform 0.2s ease;
             }
 
             .custom-marker:hover,
-            .custom-marker.active {
-                transform: rotate(-45deg) scale(1.1);
-            }
-
             .custom-marker.active {
                 background: var(--accent-light);
             }
@@ -225,7 +195,7 @@
                         name: "South London Gallery",
                         subtitle: "Gallery bookshop inside the South London Gallery",
                         address: "65 Peckham Rd, London SE5 8UH",
-                        coordinates: [-0.0735676, 51.4746321],
+                        coordinates: [-0.079681, 51.474142],
                         tags: ["political books", "queer books"],
                         reviews: [
                             {
@@ -238,7 +208,7 @@
                     {
                         name: "Rye Books",
                         address: "47 N Cross Rd, London SE22 9ET",
-                        coordinates: [-0.0759834, 51.4634982],
+                        coordinates: [-0.0736852, 51.4575379],
                         tags: ["rare books"],
                         reviews: [
                             {
@@ -251,7 +221,7 @@
                     {
                         name: "The Word Bookshop",
                         address: "314 New Cross Rd, London SE14 6AF",
-                        coordinates: [-0.0441569, 51.4752818],
+                        coordinates: [-0.0371516, 51.4754822],
                         tags: ["indie books"],
                         reviews: [
                             {
@@ -264,7 +234,7 @@
                     {
                         name: "ZENNONI Book and Tea Room",
                         address: "Deptford Market Yard, London SE8 4BX",
-                        coordinates: [-0.0258947, 51.4785634],
+                        coordinates: [-0.027017, 51.4781067],
                         tags: ["new books"],
                         reviews: [
                             {
@@ -277,7 +247,7 @@
                     {
                         name: "The Bookshop On the Heath",
                         address: "74 Tranquil Vale, Blackheath, London SE3 0BW",
-                        coordinates: [0.0074328, 51.4678215],
+                        coordinates: [0.0071421, 51.4670859],
                         tags: ["second hand", "indie books"],
                         reviews: [
                             {
@@ -290,7 +260,7 @@
                     {
                         name: "Burley Fisher Books",
                         address: "400 Kingsland Rd, London E8 4AA",
-                        coordinates: [-0.0764957, 51.5428413],
+                        coordinates: [-0.0760605, 51.5414485],
                         tags: ["new books", "second hand"],
                         reviews: [
                             {
@@ -303,7 +273,7 @@
                     {
                         name: "John Sandoe Books",
                         address: "10 Blacklands Terrace, London SW3 2SR",
-                        coordinates: [-0.1614891, 51.4924314],
+                        coordinates: [-0.1610836, 51.4913598],
                         tags: ["new books"],
                         reviews: [
                             {
@@ -316,7 +286,7 @@
                     {
                         name: "Waterstones Chelsea",
                         address: "158 King's Rd, London SW3 3NR",
-                        coordinates: [-0.1681476, 51.4880164],
+                        coordinates: [-0.1655972, 51.4889414],
                         tags: ["new books"],
                         reviews: [
                             {
@@ -337,7 +307,7 @@
                     {
                         name: "Peter Harrington",
                         address: "100 Fulham Rd, South Kensington, London SW3 6HS",
-                        coordinates: [-0.1692526, 51.4935178],
+                        coordinates: [-0.1754328, 51.4896744],
                         tags: ["rare books"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/RCnAwD9sL8iy5Rpx8",
@@ -345,7 +315,7 @@
                     {
                         name: "Sokol Books",
                         address: "239A Fulham Rd, London SW3 6HY",
-                        coordinates: [-0.1763179, 51.4908594],
+                        coordinates: [-0.1752823, 51.4893668],
                         tags: ["rare books"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/2Zcm3v45cwGZwVEBA",
@@ -353,7 +323,7 @@
                     {
                         name: "Worlds End Bookshop",
                         address: "357 King's Rd, London SW3 5ES",
-                        coordinates: [-0.1800659, 51.4845813],
+                        coordinates: [-0.1765645, 51.4836894],
                         tags: ["second hand"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/dKCKstNg7FUBLfbq9",
@@ -361,7 +331,7 @@
                     {
                         name: "Nomad Books",
                         address: "781 Fulham Rd, London SW6 5HA",
-                        coordinates: [-0.1972191, 51.4749092],
+                        coordinates: [-0.204245, 51.476371],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/C5bZemdoqw4SWLbr5",
@@ -369,7 +339,7 @@
                     {
                         name: "The Notting Hill Bookshop",
                         address: "13 Blenheim Cres, London W11 2EE",
-                        coordinates: [-0.206089, 51.515265],
+                        coordinates: [-0.2055232, 51.5156655],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/kSxX5M4Efstp14ED6",
@@ -377,7 +347,7 @@
                     {
                         name: "Queen's Park Books",
                         address: "87 Salusbury Rd, London NW6 6NH",
-                        coordinates: [-0.2067851, 51.5358479],
+                        coordinates: [-0.2051425, 51.5358024],
                         tags: null,
                         reviews: [
                             {
@@ -394,7 +364,7 @@
                     {
                         name: "The Book Warehouse London",
                         address: "38 Golders Green Rd, London NW11 8LL",
-                        coordinates: [-0.1994805, 51.5744972],
+                        coordinates: [-0.197618, 51.5724309],
                         tags: null,
                         reviews: [
                             {
@@ -407,7 +377,7 @@
                     {
                         name: "Amnesty International Bookshop",
                         address: "308 Kentish Town Rd, London NW5 2TH",
-                        coordinates: [-0.1401139, 51.5507376],
+                        coordinates: [-0.1406252, 51.5514261],
                         tags: null,
                         reviews: [
                             {
@@ -420,7 +390,7 @@
                     {
                         name: "Owl Bookshop",
                         address: "207-209 Kentish Town Rd, London NW5 2JU",
-                        coordinates: [-0.141153, 51.546665],
+                        coordinates: [-0.1418308, 51.547194],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/rpZySnuEHnojy7jp9",
@@ -428,7 +398,7 @@
                     {
                         name: "Daunt Books Notting Hill",
                         address: "21 Kensington Park Rd, London W11 2EU",
-                        coordinates: [-0.20599, 51.514644],
+                        coordinates: [-0.2056762, 51.5151192],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/LLvHVuiqGMhMGgTu9",
@@ -449,7 +419,7 @@
                     {
                         name: "Backstory",
                         address: "71 Balham High Rd, London SW12 9AP",
-                        coordinates: [-0.152835, 51.443267],
+                        coordinates: [-0.1499017, 51.4458138],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/RhYXdXuRN1vsprjf8",
@@ -457,7 +427,7 @@
                     {
                         name: "Hurlingham Books",
                         address: "Ranelagh Gardens, 91 Fulham High St, London SW6 3JS",
-                        coordinates: [-0.2019134, 51.4672001],
+                        coordinates: [-0.2101706, 51.4679205],
                         tags: ["second hand"],
                         reviews: [
                             {
@@ -470,7 +440,7 @@
                     {
                         name: "Children's Bookshop",
                         address: "29 Fortis Green Rd, Muswell Hill, London N10 3HP",
-                        coordinates: [-0.1451485, 51.5880365],
+                        coordinates: [-0.1464577, 51.590019],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/wEBsnehAotiMrj8b7",
@@ -478,7 +448,7 @@
                     {
                         name: "Skoob Books",
                         address: "66 The Brunswick off, Marchmont St, London WC1N 1AE",
-                        coordinates: [-0.123959, 51.5247577],
+                        coordinates: [-0.1244561, 51.525088],
                         tags: ["second hand"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/bJqFSdFNk91ySprcA",
@@ -486,7 +456,7 @@
                     {
                         name: "Gay's The Word",
                         address: "66 Marchmont St, London WC1N 1AB",
-                        coordinates: [-0.1228902, 51.5260547],
+                        coordinates: [-0.1252423, 51.5254445],
                         tags: ["queer books"],
                         reviews: [
                             {
@@ -499,7 +469,7 @@
                     {
                         name: "Judd Books",
                         address: "82 Marchmont St, London WC1N 1AG",
-                        coordinates: [-0.1233196, 51.5262457],
+                        coordinates: [-0.1255496, 51.5259897],
                         tags: ["second hand"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/juRW3HmVMs3yxVq56",
@@ -507,7 +477,7 @@
                     {
                         name: "London Review Bookshop",
                         address: "14-16 Bury Pl, London WC1A 2JL",
-                        coordinates: [-0.1247951, 51.5178496],
+                        coordinates: [-0.1243176, 51.518549],
                         tags: ["new books"],
                         reviews: [
                             {
@@ -520,7 +490,7 @@
                     {
                         name: "The Atlantis Bookshop",
                         address: "49A Museum St, London WC1A 1LY",
-                        coordinates: [-0.1242643, 51.5175951],
+                        coordinates: [-0.125134, 51.517479],
                         tags: ["occult bookshop"],
                         reviews: [
                             {
@@ -533,7 +503,7 @@
                     {
                         name: "Treadwell's Books",
                         address: "33 Store St, London WC1E 7BS",
-                        coordinates: [-0.1322119, 51.5185871],
+                        coordinates: [-0.1312013, 51.5199126],
                         tags: ["spiritual bookshop"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/JDQxr2TPvc4f2nUQ9",
@@ -554,7 +524,7 @@
                     {
                         name: "Waterstones Covent Garden",
                         address: "9-13 Garrick St, London WC2E 9BA",
-                        coordinates: [-0.1265703, 51.5107699],
+                        coordinates: [-0.1261111, 51.5113889],
                         tags: ["new books"],
                         reviews: [
                             {
@@ -567,7 +537,7 @@
                     {
                         name: "Watkins Books",
                         address: "19-21 Cecil Ct, London WC2N 4EZ",
-                        coordinates: [-0.1292162, 51.5103249],
+                        coordinates: [-0.1278088, 51.5106667],
                         tags: ["spiritual bookshop"],
                         reviews: [
                             {
@@ -593,7 +563,7 @@
                     {
                         name: "Daunt Books City",
                         address: "61 Cheapside, City of London, London EC2V 6AX",
-                        coordinates: [-0.0916508, 51.5134999],
+                        coordinates: [-0.09307, 51.513822],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/x7oUvAHt1NJNfh9t8",
@@ -609,7 +579,7 @@
                     {
                         name: "Word On The Water",
                         address: "Regent's Canal Towpath, London N1C 4LW",
-                        coordinates: [-0.1256036, 51.5340459],
+                        coordinates: [-0.1234795, 51.535412],
                         tags: null,
                         reviews: [
                             {
@@ -622,7 +592,7 @@
                     {
                         name: "Waterstones Liverpool Street",
                         address: "Unit LG03A, 100 Liverpool St, City of London, London EC2M 2RH",
-                        coordinates: [-0.0826864, 51.5187235],
+                        coordinates: [-0.083692, 51.5182291],
                         tags: ["new books"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/S7yUGLWoXAcURape8",
@@ -630,7 +600,7 @@
                     {
                         name: "Waterstones Leadenhall Market",
                         address: "1-3 Whittington Ave, City of London, London EC3V 1PJ",
-                        coordinates: [-0.0839118, 51.5134782],
+                        coordinates: [-0.0832829, 51.5129475],
                         tags: ["new books"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/eU3xHigyyhVZnxY47",
@@ -638,7 +608,7 @@
                     {
                         name: "Waterstones Piccadilly",
                         address: "203-206 Piccadilly, London W1J 9HD",
-                        coordinates: [-0.136812, 51.508484],
+                        coordinates: [-0.136048, 51.509125],
                         tags: ["new books"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/mqJ11JBS3PnSFaKb7",
@@ -646,7 +616,7 @@
                     {
                         name: "Goldsboro Books",
                         address: "23-27 Cecil Ct, London WC2N 4EZ",
-                        coordinates: [-0.1296, 51.5104],
+                        coordinates: [-0.1279728, 51.510696],
                         tags: ["rare books"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/dy1PsyxBwSaAz6AS9",
@@ -654,7 +624,7 @@
                     {
                         name: "Any Amount of Books",
                         address: "56 Charing Cross Rd, London WC2H 0QA",
-                        coordinates: [-0.1285284, 51.5112833],
+                        coordinates: [-0.1282799, 51.5120327],
                         tags: ["second hand", "rare books"],
                         reviews: [
                             {
@@ -667,7 +637,7 @@
                     {
                         name: "Henry Pordes Books Ltd",
                         address: "72 Charing Cross Rd, London WC2H 0BB",
-                        coordinates: [-0.128544, 51.5116511],
+                        coordinates: [-0.1285725, 51.5125731],
                         tags: ["rare books"],
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/9d4sY7o75SfciB517",
@@ -675,7 +645,7 @@
                     {
                         name: "Foyles",
                         address: "107 Charing Cross Rd, London WC2H 0EB",
-                        coordinates: [-0.1302605, 51.5150832],
+                        coordinates: [-0.1298993, 51.5143097],
                         tags: ["new books"],
                         reviews: [
                             {
@@ -692,7 +662,7 @@
                     {
                         name: "Bookmarks",
                         address: "1 Bloomsbury St, London WC1B 3QE",
-                        coordinates: [-0.1296653, 51.5175055],
+                        coordinates: [-0.1271884, 51.5170856],
                         tags: ["new books", "political books"],
                         reviews: [
                             {
@@ -705,7 +675,7 @@
                     {
                         name: "Hatchards",
                         address: "Unit 7, Euston Rd., London N1C 4QP",
-                        coordinates: [-0.1246569, 51.5306221],
+                        coordinates: [-0.1265785, 51.5309667],
                         tags: ["new books"],
                         reviews: [
                             {
@@ -718,7 +688,7 @@
                     {
                         name: "The Gilded Acorn",
                         address: "1 Portsmouth St, London WC2A 2ES",
-                        coordinates: [-0.11554, 51.51509],
+                        coordinates: [-0.1171988, 51.5148407],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/teNCh4QB9Ca2ppJDA",
@@ -726,7 +696,7 @@
                     {
                         name: "Housmans",
                         address: "5 Caledonian Rd, London N1 9DY",
-                        coordinates: [-0.1217233, 51.5300987],
+                        coordinates: [-0.1211209, 51.5312223],
                         tags: ["new books", "second hand"],
                         reviews: [
                             {
@@ -739,7 +709,7 @@
                     {
                         name: "Heywood Hill",
                         address: "10 Curzon St, London W1J 5HH",
-                        coordinates: [-0.145332, 51.506206],
+                        coordinates: [-0.1465874, 51.5070001],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/8Z2sa9QLJSmf4vLg7",
@@ -747,7 +717,7 @@
                     {
                         name: "The Quaker Bookshop",
                         address: "173-177 Euston Rd., London NW1 2BJ",
-                        coordinates: [-0.1325323, 51.5251732],
+                        coordinates: [-0.1328411, 51.5266541],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/QpyELrQxsFQZzyDq6",
@@ -755,7 +725,7 @@
                     {
                         name: "Waterstones Angel",
                         address: "11 Islington Grn, London N1 2XH",
-                        coordinates: [-0.1056067, 51.535072],
+                        coordinates: [-0.1024379, 51.5365815],
                         tags: null,
                         reviews: [
                             {
@@ -768,7 +738,7 @@
                     {
                         name: "Upper Street Bookshop",
                         address: "42 Upper St, London N1 0PN",
-                        coordinates: [-0.103661, 51.5341293],
+                        coordinates: [-0.1048705, 51.5349635],
                         tags: null,
                         reviews: [
                             {
@@ -781,7 +751,7 @@
                     {
                         name: "Bàrd Books",
                         address: "341-343 Roman Rd, Bow, London E3 5QR",
-                        coordinates: [-0.0356004, 51.5303553],
+                        coordinates: [-0.0397258, 51.5310833],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/x9ZvSuRUDvhkhVKy6",
@@ -789,7 +759,7 @@
                     {
                         name: "Common Press",
                         address: "118 Bethnal Grn Rd, London E2 6DG",
-                        coordinates: [-0.0727964, 51.5255474],
+                        coordinates: [-0.0718897, 51.5246846],
                         tags: null,
                         reviews: [
                             {
@@ -802,7 +772,7 @@
                     {
                         name: "Brick Lane Bookshop",
                         address: "166 Brick Ln, London E1 6RU",
-                        coordinates: [-0.0715731, 51.5209467],
+                        coordinates: [-0.0715071, 51.5223392],
                         tags: null,
                         reviews: [
                             {
@@ -815,7 +785,7 @@
                     {
                         name: "Libreria Bookshop",
                         address: "65 Hanbury St, London E1 5JL",
-                        coordinates: [-0.0697241, 51.5198867],
+                        coordinates: [-0.0706371, 51.5203763],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/EUqteeQ13jEnpd4E6",
@@ -823,7 +793,7 @@
                     {
                         name: "Pages of Hackney",
                         address: "70 Lower Clapton Rd, Lower Clapton, London E5 0RN",
-                        coordinates: [-0.0510445, 51.5513533],
+                        coordinates: [-0.0527047, 51.5527096],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/2pjV2abEMcWCpxUw5",
@@ -831,7 +801,7 @@
                     {
                         name: "Freedom Press Bookshop",
                         address: "84b Whitechapel High St, London E1 7QX",
-                        coordinates: [-0.0697228, 51.5158489],
+                        coordinates: [-0.0706796, 51.516152],
                         tags: null,
                         reviews: [
                             {
@@ -877,7 +847,7 @@
                         name: "National Theatre Bookshop",
                         subtitle: "Theatre bookshop inside the National Theatre",
                         address: "National Theatre, Upper Ground, London SE1 9PX",
-                        coordinates: [-0.1127485, 51.5069008],
+                        coordinates: [-0.1139758, 51.5073383],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/k3BQMDfiFTkpMk3P7",
@@ -1007,7 +977,7 @@
                     {
                         name: "New Beacon Books",
                         address: "76 Stroud Green Road, London N4 3EF",
-                        coordinates: [-0.1095001, 51.5681113],
+                        coordinates: [-0.1099729, 51.5683317],
                         tags: null,
                         reviews: null,
                         googleMapsLink: "https://maps.app.goo.gl/TLM8QNhE2xeAZiU79",
@@ -1046,11 +1016,19 @@
                 map = new mapboxgl.Map({
                     container: "map",
                     style: "mapbox://styles/mapbox/light-v10",
-                    center: [-0.1276, 51.5074],
-                    zoom: 11,
+                    center: [-0.12, 51.515],
+                    zoom: 12.5,
+                    locale: {
+                        "GeolocateControl.FindMyLocation": "Near me",
+                    },
                 });
 
                 map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+                map.addControl(new mapboxgl.GeolocateControl({
+                    positionOptions: { enableHighAccuracy: true },
+                    trackUserLocation: true,
+                    showUserHeading: true,
+                }), "bottom-right");
 
                 // Clicking empty map closes the card
                 map.on("click", closeCard);
@@ -1079,7 +1057,7 @@
                 `;
 
                 if (data.googleMapsLink) {
-                    html += `<div class="card-actions"><a href="${data.googleMapsLink}" target="_blank" class="btn btn-secondary">Open in Maps</a></div>`;
+                    html += `<a href="${data.googleMapsLink}" target="_blank" class="bookstore-link">${data.googleMapsLink.replace(/^https?:\/\//, '')}</a>`;
                 }
 
                 return html;
@@ -1093,7 +1071,7 @@
                     openCard(data, el);
                 });
 
-                return new mapboxgl.Marker({ element: el })
+                return new mapboxgl.Marker({ element: el, anchor: 'bottom-left' })
                     .setLngLat(data.coordinates)
                     .addTo(map);
             }
