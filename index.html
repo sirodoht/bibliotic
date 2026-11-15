@@ -16,6 +16,7 @@
                 --text-muted: #7a7a7a;
                 --accent: #8b4513;
                 --accent-light: #a0522d;
+                --accent-dark: #5c2d0c;
                 --accent-pale: #d4a574;
                 --border: #e0d8cc;
                 --shadow: rgba(0, 0, 0, 0.06);
@@ -131,18 +132,28 @@
 
             /* Custom Marker */
             .custom-marker {
-                width: 22px;
-                height: 22px;
+                width: 14px;
+                height: 14px;
                 background: var(--accent);
                 border: 2px solid white;
-                border-radius: 50% 50% 50% 0;
+                border-radius: 50%;
                 cursor: pointer;
-                box-shadow: 0 2px 8px var(--shadow-strong);
+                box-shadow: 0 1px 4px var(--shadow-strong);
+                transition: width 0.15s ease, height 0.15s ease, background 0.15s ease;
             }
 
-            .custom-marker:hover,
+            /* Size changes stay centred because markers are anchored at their centre */
+            .custom-marker:hover {
+                width: 18px;
+                height: 18px;
+            }
+
             .custom-marker.active {
-                background: var(--accent-light);
+                width: 22px;
+                height: 22px;
+                border-width: 3px;
+                background: var(--accent-dark);
+                z-index: 1;
             }
         </style>
     </head>
@@ -1071,7 +1082,7 @@
                     openCard(data, el);
                 });
 
-                return new mapboxgl.Marker({ element: el, anchor: 'bottom-left' })
+                return new mapboxgl.Marker({ element: el })
                     .setLngLat(data.coordinates)
                     .addTo(map);
             }
