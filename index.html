@@ -23,6 +23,7 @@
                 --pin: #000000;
                 --pin-active: #000000;
                 --pin-border: #ffffff;
+                --hover: rgba(0, 0, 0, 0.05);
                 color-scheme: light;
             }
 
@@ -37,6 +38,7 @@
                     --pin: #bbbbbb;
                     --pin-active: #ffffff;
                     --pin-border: #000000;
+                    --hover: rgba(255, 255, 255, 0.08);
                     color-scheme: dark;
                 }
             }
@@ -138,6 +140,84 @@
                 }
             }
 
+            /* Search */
+            .search {
+                margin-top: 0.875rem;
+            }
+
+            .search[hidden],
+            .search [hidden] {
+                display: none;
+            }
+
+            .search-input {
+                width: 100%;
+                font: inherit;
+                font-size: 16px; /* 16px stops iOS zooming in on focus */
+                padding: 0.5rem 0.75rem;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+            }
+
+            .search-input:focus {
+                outline: none;
+                border-color: var(--accent);
+            }
+
+            .search-count {
+                font-size: 0.8125rem;
+                color: var(--text-muted);
+                margin-top: 0.5rem;
+            }
+
+            .search-results {
+                list-style: none;
+                margin: 0.25rem -0.5rem 0;
+                max-height: 280px;
+                overflow-y: auto;
+            }
+
+            .search-result {
+                display: block;
+                width: 100%;
+                padding: 0.375rem 0.5rem;
+                border: none;
+                border-radius: 4px;
+                background: none;
+                font: inherit;
+                color: inherit;
+                text-align: left;
+                cursor: pointer;
+            }
+
+            .search-result:hover,
+            .search-result:focus-visible {
+                background: var(--hover);
+                outline: none;
+            }
+
+            .search-result-name {
+                display: block;
+                font-family: serif;
+                font-size: 1rem;
+                line-height: 1.3;
+            }
+
+            .search-result-address {
+                display: block;
+                font-size: 0.8125rem;
+                color: var(--text-muted);
+                line-height: 1.4;
+            }
+
+            @media (max-width: 480px) {
+                .search-results {
+                    max-height: 35vh;
+                }
+            }
+
             /* Near me button */
             .mapboxgl-ctrl-group button.mapboxgl-ctrl-geolocate {
                 width: 48px;
@@ -222,6 +302,11 @@
             <div id="card-content">
                 <h1 class="bookstore-name">londonbookmap.com</h1>
                 <p class="bookstore-subtitle">all london bookshops</p>
+            </div>
+            <div id="search" class="search">
+                <input id="search-input" class="search-input" type="search" placeholder="Search bookshops" aria-label="Search bookshops" autocomplete="off" spellcheck="false" />
+                <p id="search-count" class="search-count" aria-live="polite" hidden></p>
+                <ul id="search-results" class="search-results" hidden></ul>
             </div>
         </div>
 
@@ -1128,11 +1213,21 @@
 
             let map;
 
+            // One entry per shop on the map: its data, its marker element and its searchable text
+            const entries = [];
+
             document.addEventListener('DOMContentLoaded', () => {
                 initMap();
                 DATA.bookstores.forEach(data => {
-                    if (data.coordinates) createMarker(data);
+                    if (!data.coordinates) return;
+                    entries.push({
+                        data,
+                        el: createMarker(data).getElement(),
+                        name: normalize(data.name),
+                        text: normalize([data.name, data.subtitle, data.address].join(" ")),
+                    });
                 });
+                initSearch();
             });
 
             function initMap() {
@@ -1174,6 +1269,7 @@
                 defaultCardHTML ??= document.getElementById("card-content").innerHTML;
                 document.getElementById("card-content").innerHTML = createCardHTML(data);
                 document.querySelector(".card-close").hidden = false;
+                document.getElementById("search").hidden = true;
                 document.querySelectorAll(".custom-marker.active").forEach(m => m.classList.remove("active"));
                 el.classList.add("active");
             }
@@ -1181,6 +1277,7 @@
             function closeCard() {
                 if (defaultCardHTML) document.getElementById("card-content").innerHTML = defaultCardHTML;
                 document.querySelector(".card-close").hidden = true;
+                document.getElementById("search").hidden = false;
                 document.querySelectorAll(".custom-marker.active").forEach(m => m.classList.remove("active"));
             }
 
@@ -1214,6 +1311,146 @@
                 return new mapboxgl.Marker({ element: el })
                     .setLngLat(data.coordinates)
                     .addTo(map);
+            }
+
+            // Lowercase, strip accents and apostrophes, and turn other punctuation into spaces,
+            // so "photographers" finds "The Photographers' Gallery" and "se22" finds "London SE22 8HN"
+            function normalize(text) {
+                return text
+                    .normalize("NFD")
+                    .replace(/[̀-ͯ]/g, "")
+                    .toLowerCase()
+                    .replace(/['’]/g, "")
+                    .replace(/[^a-z0-9]+/g, " ")
+                    .trim();
+            }
+
+            let fitTimer;
+
+            function initSearch() {
+                const search = document.getElementById("search");
+                const input = document.getElementById("search-input");
+                const list = document.getElementById("search-results");
+                const count = document.getElementById("search-count");
+
+                input.addEventListener("input", () => {
+                    clearTimeout(fitTimer);
+                    const query = normalize(input.value);
+                    const words = query.split(" ").filter(Boolean);
+
+                    if (!words.length) {
+                        entries.forEach(entry => entry.el.style.display = "");
+                        list.replaceChildren();
+                        list.hidden = true;
+                        count.hidden = true;
+                        return;
+                    }
+
+                    // A shop matches when every typed word appears in its name, subtitle or address
+                    const matches = entries.filter(entry => {
+                        const isMatch = words.every(word => entry.text.includes(word));
+                        entry.el.style.display = isMatch ? "" : "none";
+                        return isMatch;
+                    });
+
+                    // Name matches first, then address-only matches, alphabetically within each
+                    const rank = entry => entry.name.startsWith(query) ? 0 : words.every(word => entry.name.includes(word)) ? 1 : 2;
+                    matches.sort((a, b) => rank(a) - rank(b) || a.data.name.localeCompare(b.data.name));
+
+                    count.textContent = matches.length
+                        ? `${matches.length} ${matches.length === 1 ? "shop" : "shops"}`
+                        : "No shops found";
+                    count.hidden = false;
+                    list.replaceChildren(...matches.map(createResultItem));
+                    list.hidden = !matches.length;
+
+                    // Bring the matching pins into view once typing pauses
+                    if (matches.length) fitTimer = setTimeout(() => fitToEntries(matches), 400);
+                });
+
+                input.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") {
+                        list.querySelector("button")?.click();
+                    } else if (e.key === "Escape") {
+                        input.value = "";
+                        input.dispatchEvent(new Event("input"));
+                    } else if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        list.querySelector("button")?.focus();
+                    }
+                });
+
+                list.addEventListener("keydown", (e) => {
+                    const buttons = [...list.querySelectorAll("button")];
+                    const index = buttons.indexOf(document.activeElement);
+                    if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        buttons[index + 1]?.focus();
+                    } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        (buttons[index - 1] ?? input).focus();
+                    } else if (e.key === "Escape") {
+                        input.focus();
+                    }
+                });
+
+                // "/" jumps to the search box
+                document.addEventListener("keydown", (e) => {
+                    if (e.key === "/" && !search.hidden && document.activeElement === document.body) {
+                        e.preventDefault();
+                        input.focus();
+                    }
+                });
+            }
+
+            function createResultItem(entry) {
+                const name = document.createElement("span");
+                name.className = "search-result-name";
+                name.textContent = entry.data.name;
+
+                const address = document.createElement("span");
+                address.className = "search-result-address";
+                address.textContent = entry.data.address ?? "";
+
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "search-result";
+                button.append(name, address);
+                button.addEventListener("click", () => openEntry(entry));
+
+                const item = document.createElement("li");
+                item.append(button);
+                return item;
+            }
+
+            function openEntry(entry) {
+                clearTimeout(fitTimer);
+                openCard(entry.data, entry.el);
+                // Centre the pin in the part of the map the card doesn't cover
+                const inset = cardInset();
+                map.flyTo({
+                    center: entry.data.coordinates,
+                    zoom: Math.max(map.getZoom(), 15),
+                    offset: [inset.left / 2, inset.top / 2],
+                });
+            }
+
+            function fitToEntries(matches) {
+                const bounds = new mapboxgl.LngLatBounds();
+                matches.forEach(entry => bounds.extend(entry.data.coordinates));
+                const inset = cardInset();
+                map.fitBounds(bounds, {
+                    padding: { top: 48 + inset.top, bottom: 48, left: 48 + inset.left, right: 64 },
+                    maxZoom: 15,
+                });
+            }
+
+            // How much of the map the card covers: its right edge on wide screens, its bottom edge on phones
+            function cardInset() {
+                const rect = document.getElementById("card").getBoundingClientRect();
+                return window.matchMedia("(max-width: 480px)").matches
+                    ? { top: rect.bottom, left: 0 }
+                    : { top: 0, left: rect.right };
             }
         </script>
     </body>
