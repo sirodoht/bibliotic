@@ -4,9 +4,6 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
         <title>Bibliotic — London Bookshops Reviewed</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.css" rel="stylesheet" />
         <style>
@@ -32,284 +29,17 @@
             }
 
             body {
-                font-family: 'Inter', -apple-system, sans-serif;
+                font-family: system-ui, -apple-system, sans-serif;
                 background: var(--bg-primary);
                 color: var(--text-primary);
-                min-height: 100vh;
                 line-height: 1.6;
-            }
-
-            /* Header */
-            header {
-                padding: 4rem 2rem 3rem;
-                text-align: center;
-                background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-                border-bottom: 1px solid var(--border);
-            }
-
-            h1 {
-                font-family: 'Cormorant Garamond', Georgia, serif;
-                font-size: clamp(3rem, 8vw, 5rem);
-                font-weight: 500;
-                letter-spacing: -0.02em;
-                color: var(--text-primary);
-                margin-bottom: 0.75rem;
-            }
-
-            .subtitle {
-                font-family: 'Cormorant Garamond', Georgia, serif;
-                font-size: 1.25rem;
-                font-style: italic;
-                color: var(--text-muted);
-                font-weight: 400;
-            }
-
-            /* Container */
-            .container {
-                max-width: 1600px;
-                margin: 0 auto;
-                padding: 0 2rem;
-            }
-
-            @media (max-width: 768px) {
-                .container {
-                    padding: 0 1rem;
-                }
-                
-                header {
-                    padding: 2.5rem 1rem 2rem;
-                }
-            }
-
-            /* Map Section */
-            .map-section {
-                margin: 3rem 0;
-                border-radius: 8px;
                 overflow: hidden;
-                box-shadow: 0 4px 24px var(--shadow-strong);
-                background: var(--bg-secondary);
-                border: 1px solid var(--border);
             }
 
             #map {
                 width: 100%;
-                height: 500px;
-            }
-
-            .map-controls {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 1rem 1.5rem;
-                background: var(--bg-secondary);
-                border-top: 1px solid var(--border);
-            }
-
-            .map-control-btn {
-                background: transparent;
-                color: var(--text-secondary);
-                border: 1px solid var(--border);
-                padding: 0.5rem 1rem;
-                font-size: 0.875rem;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                border-radius: 4px;
-                font-family: 'Inter', sans-serif;
-            }
-
-            .map-control-btn:hover {
-                background: var(--bg-tertiary);
-                border-color: var(--accent-pale);
-            }
-
-            /* Filter Section */
-            .filter-section {
-                margin-bottom: 2rem;
-                padding: 1.5rem;
-                background: var(--bg-secondary);
-                border-radius: 8px;
-                border: 1px solid var(--border);
-            }
-
-            .filter-grid {
-                display: grid;
-                grid-template-columns: 1fr auto auto;
-                gap: 1.5rem;
-                align-items: start;
-            }
-
-            @media (max-width: 1024px) {
-                .filter-grid {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            .search-box {
-                position: relative;
-            }
-
-            .search-box input {
-                width: 100%;
-                padding: 0.75rem 2.5rem 0.75rem 1rem;
-                border: 1px solid var(--border);
-                border-radius: 6px;
-                background: var(--bg-primary);
-                color: var(--text-primary);
-                font-size: 0.9375rem;
-                font-family: 'Inter', sans-serif;
-                transition: all 0.2s ease;
-            }
-
-            .search-box input:focus {
-                outline: none;
-                border-color: var(--accent-pale);
-                box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.08);
-            }
-
-            .clear-search-btn {
-                position: absolute;
-                right: 0.75rem;
-                top: 50%;
-                transform: translateY(-50%);
-                background: none;
-                border: none;
-                color: var(--text-muted);
-                font-size: 1.25rem;
-                cursor: pointer;
-                display: none;
-                padding: 0;
-                width: 24px;
-                height: 24px;
-                line-height: 24px;
-            }
-
-            .search-box input:not(:placeholder-shown) + .clear-search-btn {
-                display: block;
-            }
-
-            .filter-tags {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-
-            .filter-btn {
-                background: var(--bg-primary);
-                color: var(--text-secondary);
-                border: 1px solid var(--border);
-                padding: 0.5rem 0.875rem;
-                font-size: 0.8125rem;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                border-radius: 4px;
-                font-family: 'Inter', sans-serif;
-                font-weight: 500;
-            }
-
-            .filter-btn:hover {
-                background: var(--bg-tertiary);
-                border-color: var(--accent-pale);
-            }
-
-            .filter-btn.active {
-                background: var(--accent);
-                color: white;
-                border-color: var(--accent);
-            }
-
-            .sort-select {
-                padding: 0.75rem 1rem;
-                border: 1px solid var(--border);
-                border-radius: 6px;
-                background: var(--bg-primary);
-                color: var(--text-primary);
-                font-size: 0.875rem;
-                font-family: 'Inter', sans-serif;
-                cursor: pointer;
-            }
-
-            .location-filters {
-                margin-top: 1rem;
-                padding-top: 1rem;
-                border-top: 1px solid var(--border);
-            }
-
-            .location-label {
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                color: var(--text-muted);
-                margin-bottom: 0.75rem;
-                font-weight: 500;
-            }
-
-            .location-buttons {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-
-            .location-btn {
-                background: transparent;
-                color: var(--text-secondary);
-                border: 1px solid transparent;
-                padding: 0.375rem 0.75rem;
-                font-size: 0.8125rem;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                border-radius: 4px;
-                font-family: 'Inter', sans-serif;
-            }
-
-            .location-btn:hover {
-                background: var(--bg-tertiary);
-            }
-
-            .location-btn.active {
-                background: var(--bg-tertiary);
-                color: var(--accent);
-                border-color: var(--accent-pale);
-            }
-
-            /* Results Count */
-            .results-count {
-                text-align: center;
-                margin-bottom: 2rem;
-                color: var(--text-muted);
-                font-size: 0.9375rem;
-            }
-
-            /* Bookstore Grid */
-            .bookstore-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-                gap: 1.5rem;
-                margin-bottom: 4rem;
-            }
-
-            @media (max-width: 768px) {
-                .bookstore-grid {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            .bookstore-card {
-                background: var(--bg-primary);
-                border: 1px solid var(--border);
-                border-radius: 8px;
-                padding: 1.75rem;
-                transition: all 0.25s ease;
-                position: relative;
-            }
-
-            .bookstore-card:hover {
-                box-shadow: 0 8px 32px var(--shadow-strong);
-                transform: translateY(-2px);
-            }
-
-            .bookstore-card.highlighted {
-                border-color: var(--accent);
-                box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+                height: 100vh;
+                height: 100svh;
             }
 
             .bookstore-header {
@@ -317,73 +47,23 @@
             }
 
             .bookstore-name {
-                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-family: serif;
                 font-size: 1.5rem;
-                font-weight: 600;
+                font-weight: 400;
                 color: var(--text-primary);
                 margin-bottom: 0.5rem;
                 line-height: 1.3;
             }
 
+            .bookstore-subtitle {
+                font-family: serif;
+                color: var(--text-muted);
+                margin-bottom: 0.5rem;
+            }
+
             .bookstore-address {
                 font-size: 0.875rem;
                 color: var(--text-muted);
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .bookstore-address::before {
-                content: "📍";
-                font-size: 0.75rem;
-            }
-
-            .tag-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.375rem;
-                margin-bottom: 1rem;
-            }
-
-            .tag {
-                background: var(--bg-secondary);
-                color: var(--accent);
-                padding: 0.25rem 0.625rem;
-                border-radius: 4px;
-                font-size: 0.6875rem;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                border: 1px solid var(--border);
-            }
-
-            .reviews-section {
-                margin-top: 1rem;
-                padding-top: 1rem;
-                border-top: 1px solid var(--border);
-            }
-
-            .review {
-                margin-bottom: 1rem;
-            }
-
-            .review:last-child {
-                margin-bottom: 0;
-            }
-
-            .review-text {
-                font-family: 'Cormorant Garamond', Georgia, serif;
-                font-size: 1rem;
-                font-style: italic;
-                color: var(--text-secondary);
-                line-height: 1.6;
-                margin-bottom: 0.375rem;
-            }
-
-            .reviewer {
-                font-size: 0.8125rem;
-                color: var(--text-muted);
-                font-weight: 500;
             }
 
             .card-actions {
@@ -398,12 +78,12 @@
                 gap: 0.375rem;
                 padding: 0.625rem 1rem;
                 font-size: 0.8125rem;
-                font-weight: 500;
+                font-weight: 400;
                 border-radius: 6px;
                 cursor: pointer;
                 transition: all 0.2s ease;
                 text-decoration: none;
-                font-family: 'Inter', sans-serif;
+                font-family: inherit;
             }
 
             .btn-primary {
@@ -428,61 +108,57 @@
                 border-color: var(--accent-pale);
             }
 
-            .no-results {
-                text-align: center;
-                padding: 4rem 2rem;
-                color: var(--text-muted);
-                grid-column: 1 / -1;
-            }
-
-            .no-results h3 {
-                font-family: 'Cormorant Garamond', Georgia, serif;
-                font-size: 1.5rem;
-                color: var(--text-secondary);
-                margin-bottom: 0.5rem;
-            }
-
-            /* Footer */
-            footer {
-                text-align: center;
-                padding: 3rem 2rem;
-                border-top: 1px solid var(--border);
-                background: var(--bg-secondary);
-                color: var(--text-muted);
-                font-size: 0.9375rem;
-            }
-
-            footer a {
-                color: var(--accent);
-                text-decoration: none;
-                font-weight: 500;
-            }
-
-            footer a:hover {
-                text-decoration: underline;
-            }
-
-            /* Mapbox Popup Styling */
-            .mapboxgl-popup-content {
+            /* Bookstore Card */
+            .card {
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                width: 360px;
+                max-height: calc(100% - 32px);
+                overflow-y: auto;
                 background: var(--bg-primary);
-                border-radius: 8px;
-                padding: 1rem;
-                box-shadow: 0 4px 24px var(--shadow-strong);
                 border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 1.5rem;
+                box-shadow: 0 4px 24px var(--shadow-strong);
+                z-index: 10;
             }
 
-            .mapboxgl-popup-close-button {
+            .card[hidden] {
+                display: none;
+            }
+
+            .card-close {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                width: 2rem;
+                height: 2rem;
+                border: none;
+                background: transparent;
                 color: var(--text-muted);
-                font-size: 1.25rem;
-                padding: 0.5rem;
+                font-size: 1.5rem;
+                line-height: 1;
+                cursor: pointer;
+            }
+
+            .card-close:hover {
+                color: var(--text-primary);
+            }
+
+            @media (max-width: 480px) {
+                .card {
+                    width: auto;
+                    right: 16px;
+                }
             }
 
             /* Custom Marker */
             .custom-marker {
-                width: 32px;
-                height: 32px;
+                width: 22px;
+                height: 22px;
                 background: var(--accent);
-                border: 3px solid white;
+                border: 2px solid white;
                 border-radius: 50% 50% 50% 0;
                 transform: rotate(-45deg);
                 cursor: pointer;
@@ -490,72 +166,22 @@
                 transition: transform 0.2s ease;
             }
 
-            .custom-marker:hover {
+            .custom-marker:hover,
+            .custom-marker.active {
                 transform: rotate(-45deg) scale(1.1);
+            }
+
+            .custom-marker.active {
+                background: var(--accent-light);
             }
         </style>
     </head>
     <body>
-        <header>
-            <h1>Bibliotic</h1>
-            <p class="subtitle">Opinionated reviews for London's bookstores</p>
-        </header>
-
-        <div class="container">
-            <div class="map-section">
-                <div id="map"></div>
-                <div class="map-controls">
-                    <span style="color: var(--text-muted); font-size: 0.875rem;">Explore bookstores across London</span>
-                    <button id="scroll-zoom-toggle" class="map-control-btn">
-                        Enable Scroll Zoom
-                    </button>
-                </div>
-            </div>
-
-            <div class="filter-section">
-                <div class="filter-grid">
-                    <div class="search-box">
-                        <input type="text" id="search-input" placeholder="Search bookstores by name or location...">
-                        <button id="clear-search" class="clear-search-btn">×</button>
-                    </div>
-                    <div class="filter-tags">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="new books">New Books</button>
-                        <button class="filter-btn" data-filter="second hand">Second Hand</button>
-                        <button class="filter-btn" data-filter="rare books">Rare Books</button>
-                        <button class="filter-btn" data-filter="queer books">Queer Books</button>
-                        <button class="filter-btn" data-filter="political books">Political</button>
-                    </div>
-                    <select id="sort-select" class="sort-select">
-                        <option value="name-asc">Name (A–Z)</option>
-                        <option value="name-desc">Name (Z–A)</option>
-                    </select>
-                </div>
-                <div class="location-filters">
-                    <div class="location-label">Filter by Area</div>
-                    <div class="location-buttons">
-                        <button class="location-btn active" data-area="all">All Areas</button>
-                        <button class="location-btn" data-area="central">Central</button>
-                        <button class="location-btn" data-area="north">North</button>
-                        <button class="location-btn" data-area="south">South</button>
-                        <button class="location-btn" data-area="east">East</button>
-                        <button class="location-btn" data-area="west">West</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="results-count" id="results-count"></div>
-
-            <div class="bookstore-grid" id="bookstore-grid">
-            </div>
+        <div id="map"></div>
+        <div id="card" class="card" hidden>
+            <button class="card-close" aria-label="Close">×</button>
+            <div id="card-content"></div>
         </div>
-
-        <footer>
-            <p>
-                Contribute by adding your review or a bookstore we're missing.
-                <a href="https://github.com/sirodoht/bibliotic" target="_blank">Open a PR on GitHub →</a>
-            </p>
-        </footer>
 
         <script>
             const DATA = {
@@ -583,6 +209,7 @@
                     },
                     {
                         name: "hmv",
+                        subtitle: "Music, film and entertainment store with a books section",
                         address: "363 Oxford St, London W1C 2LA",
                         coordinates: [-0.1485584, 51.5143079],
                         tags: ["new books"],
@@ -596,6 +223,7 @@
                     },
                     {
                         name: "South London Gallery",
+                        subtitle: "Gallery bookshop inside the South London Gallery",
                         address: "65 Peckham Rd, London SE5 8UH",
                         coordinates: [-0.0735676, 51.4746321],
                         tags: ["political books", "queer books"],
@@ -1088,19 +716,6 @@
                         googleMapsLink: "https://maps.app.goo.gl/GSfyVzoqB5tf8iwQA",
                     },
                     {
-                        name: "Maison Assouline",
-                        address: "196A Piccadilly, London W1J 9EY",
-                        coordinates: [-0.1376105, 51.5084649],
-                        tags: null,
-                        reviews: [
-                            {
-                                text: "Bookstore and fancy bar combined. The book selection is mainly expensive coffee table books, including their very famous namesake collection.",
-                                reviewer: "Chry S.",
-                            },
-                        ],
-                        googleMapsLink: "https://maps.app.goo.gl/WQZsSkP31Xf5nxv49",
-                    },
-                    {
                         name: "The Gilded Acorn",
                         address: "1 Portsmouth St, London WC2A 2ES",
                         coordinates: [-0.11554, 51.51509],
@@ -1228,358 +843,201 @@
                     },
                     {
                         name: "The Broadway Bookshop",
-                        address: null,
-                        coordinates: null,
+                        address: "6 Broadway Market, London E8 4QJ",
+                        coordinates: [-0.0620231, 51.5357902],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Koenig Books",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/XWoqBHfZ5wLRGjWCA",
                     },
                     {
                         name: "Artwords Bookshop",
-                        address: null,
-                        coordinates: null,
+                        address: "20-22 Broadway Market, London E8 4QJ",
+                        coordinates: [-0.0618289, 51.5361965],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "The Common Press Bookshop",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "London Centre for Book Arts",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/GufA45C4UJGwAKt39",
                     },
                     {
                         name: "Morocco Bound",
-                        address: null,
-                        coordinates: null,
+                        address: "1a Morocco Street, London SE1 3HB",
+                        coordinates: [-0.0820472, 51.5003707],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/y2348EcQq8p46Fx48",
                     },
                     {
                         name: "Marcus Campbell Art Books",
-                        address: null,
-                        coordinates: null,
+                        address: "43 Holland Street, London SE1 9JR",
+                        coordinates: [-0.1019066, 51.5076634],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "South London Gallery Bookshop",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Terrace Shop, Tate Modern",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/JyLGw4QJ864VVbdB8",
                     },
                     {
                         name: "National Theatre Bookshop",
-                        address: null,
-                        coordinates: null,
+                        subtitle: "Theatre bookshop inside the National Theatre",
+                        address: "National Theatre, Upper Ground, London SE1 9PX",
+                        coordinates: [-0.1127485, 51.5069008],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Garden Museum Shop",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/k3BQMDfiFTkpMk3P7",
                     },
                     {
                         name: "Bookmongers",
-                        address: null,
-                        coordinates: null,
+                        address: "439 Coldharbour Lane, London SW9 8LN",
+                        coordinates: [-0.1138494, 51.4614766],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/N48HapiRqkBavkZB6",
                     },
                     {
                         name: "Round Table Books",
-                        address: null,
-                        coordinates: null,
+                        address: "73 Coldharbour Lane, London SW9 8PS",
+                        coordinates: [-0.1119473, 51.462268],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/UFpzJsqb46GYUsA98",
                     },
                     {
                         name: "South Bank Book Market",
-                        address: null,
-                        coordinates: null,
+                        subtitle: "Outdoor second-hand book stalls under Waterloo Bridge",
+                        address: "The Queen's Walk, London SE1 9PX",
+                        coordinates: [-0.115794, 51.5073583],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/X2eayYRWsnZ1VLN67",
                     },
                     {
                         name: "Books for Cooks",
-                        address: null,
-                        coordinates: null,
+                        address: "4 Blenheim Crescent, London W11 1NN",
+                        coordinates: [-0.2053953, 51.5159017],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/qUHukYMXZ452d5466",
                     },
                     {
                         name: "Foster Books",
-                        address: null,
-                        coordinates: null,
+                        address: "183 Chiswick High Road, London W4 2DR",
+                        coordinates: [-0.2569141, 51.4923307],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "The L&R Bookshop",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/fS8WrkG2AHC4jLaM7",
                     },
                     {
                         name: "The Alligator's Mouth",
-                        address: null,
-                        coordinates: null,
+                        address: "2a Church Court, Richmond TW9 1JL",
+                        coordinates: [-0.3040422, 51.4604433],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "TASCHEN Store London",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/UG9DhEvPU5aeJgqx8",
                     },
                     {
                         name: "The Photographers' Gallery Bookshop",
-                        address: null,
-                        coordinates: null,
+                        subtitle: "Photography bookshop inside The Photographers' Gallery",
+                        address: "16-18 Ramillies Street, London W1F 7LW",
+                        coordinates: [-0.1390399, 51.5149581],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/zgQCquJ314qoMisN6",
                     },
                     {
                         name: "IDEA",
-                        address: null,
-                        coordinates: null,
+                        address: "101 Wardour Street, London W1F 0UG",
+                        coordinates: [-0.1338097, 51.5129913],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "magCulture",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/bZNfNHkb3niNJx968",
                     },
                     {
                         name: "Jarndyce",
-                        address: null,
-                        coordinates: null,
+                        address: "46 Great Russell Street, London WC1B 3PA",
+                        coordinates: [-0.126262, 51.51805],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/WGz5jiUHFEGMQovQ9",
                     },
                     {
                         name: "Gosh! Comics",
-                        address: null,
-                        coordinates: null,
+                        address: "1 Berwick Street, London W1F 0DR",
+                        coordinates: [-0.1341339, 51.5128964],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "RIBA Bookshop",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Gay's The Word",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Cecil Court",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Magma",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/8xAg37B5zHjTbk1Z6",
                     },
                     {
                         name: "Stanfords",
-                        address: null,
-                        coordinates: null,
+                        address: "7 Mercer Walk, London WC2H 9FA",
+                        coordinates: [-0.1253547, 51.5130063],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Treadwell's Books",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Climax Books HQ",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "The Second Shelf",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Housmans Bookshop",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/5hPYmfSeQ9Q2SekR6",
                     },
                     {
                         name: "BookBar",
-                        address: null,
-                        coordinates: null,
+                        address: "166 Blackstock Road, London N5 1ET",
+                        coordinates: [-0.0987492, 51.560263],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/mhmxojezrUJy3s2K8",
                     },
                     {
                         name: "Walden Books",
-                        address: null,
-                        coordinates: null,
+                        address: "38 Harmood Street, London NW1 8DP",
+                        coordinates: [-0.1469326, 51.5440302],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/qF6YKkWJFDZ7h3ub7",
                     },
                     {
                         name: "Primrose Hill Books",
-                        address: null,
-                        coordinates: null,
+                        address: "134 Regent's Park Road, London NW1 8XL",
+                        coordinates: [-0.1572437, 51.5408055],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Boom Cat Books",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/WXGcbHdA6fLBJkXf8",
                     },
                     {
                         name: "Ink@84 Books",
-                        address: null,
-                        coordinates: null,
+                        address: "84 Highbury Park, London N5 2XE",
+                        coordinates: [-0.0979533, 51.5572993],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/uhiGG8y3X7P6UHxZA",
                     },
                     {
                         name: "New Beacon Books",
-                        address: null,
-                        coordinates: null,
+                        address: "76 Stroud Green Road, London N4 3EF",
+                        coordinates: [-0.1095001, 51.5681113],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
-                    },
-                    {
-                        name: "Pickled Pepper Books",
-                        address: null,
-                        coordinates: null,
-                        tags: null,
-                        reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/TLM8QNhE2xeAZiU79",
                     },
                     {
                         name: "Stoke Newington Bookshop",
-                        address: null,
-                        coordinates: null,
+                        address: "159 Stoke Newington High Street, London N16 0NY",
+                        coordinates: [-0.0739381, 51.5613087],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/vKQ5uZ9JmixP5nKy7",
                     },
                     {
                         name: "Donlon Books",
-                        address: null,
-                        coordinates: null,
+                        address: "75 Broadway Market, London E8 4PH",
+                        coordinates: [-0.0611409, 51.5376502],
                         tags: null,
                         reviews: null,
-                        googleMapsLink: null,
+                        googleMapsLink: "https://maps.app.goo.gl/rTvVKqyt2UmZm2fW6",
                     },
                 ],
             };
 
-            // State
-            let currentFilter = "all";
-            let currentSort = "name-asc";
-            let currentLocation = "all";
-            let searchTerm = "";
-            let bookstores = [];
-            let markers = [];
             let map;
 
-            // Initialize
             document.addEventListener('DOMContentLoaded', () => {
                 initMap();
-                initBookstores();
-                initFilters();
-                updateBookstoreList();
+                DATA.bookstores.forEach(data => {
+                    if (data.coordinates) createMarker(data);
+                });
             });
 
             function initMap() {
@@ -1592,296 +1050,53 @@
                     zoom: 11,
                 });
 
-                map.scrollZoom.disable();
-                map.addControl(new mapboxgl.NavigationControl());
+                map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
-                // Scroll zoom toggle
-                const scrollZoomToggle = document.getElementById("scroll-zoom-toggle");
-                let scrollZoomEnabled = false;
-
-                const isTouchDevice = () => {
-                    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-                };
-
-                if (isTouchDevice()) {
-                    scrollZoomToggle.style.display = "none";
-                } else {
-                    scrollZoomToggle.addEventListener("click", () => {
-                        if (scrollZoomEnabled) {
-                            map.scrollZoom.disable();
-                            scrollZoomToggle.textContent = "Enable Scroll Zoom";
-                            scrollZoomEnabled = false;
-                        } else {
-                            map.scrollZoom.enable();
-                            scrollZoomToggle.textContent = "Disable Scroll Zoom";
-                            scrollZoomEnabled = true;
-                        }
-                    });
-                }
+                // Clicking empty map closes the card
+                map.on("click", closeCard);
+                document.querySelector(".card-close").addEventListener("click", closeCard);
             }
 
-            function initBookstores() {
-                const grid = document.getElementById('bookstore-grid');
-                
-                DATA.bookstores.forEach((data, index) => {
-                    const card = createBookstoreCard(data, index);
-                    grid.appendChild(card.element);
-                    
-                    bookstores.push({
-                        data: data,
-                        element: card.element,
-                        marker: null
-                    });
-
-                    // Create marker if coordinates exist
-                    if (data.coordinates) {
-                        const marker = createMarker(data, card.element);
-                        bookstores[index].marker = marker;
-                        markers.push(marker);
-                    }
-                });
+            function openCard(data, el) {
+                document.getElementById("card-content").innerHTML = createCardHTML(data);
+                document.getElementById("card").hidden = false;
+                document.querySelectorAll(".custom-marker.active").forEach(m => m.classList.remove("active"));
+                el.classList.add("active");
             }
 
-            function createBookstoreCard(data, index) {
-                const element = document.createElement('div');
-                element.className = 'bookstore-card';
-                element.dataset.index = index;
-                
+            function closeCard() {
+                document.getElementById("card").hidden = true;
+                document.querySelectorAll(".custom-marker.active").forEach(m => m.classList.remove("active"));
+            }
+
+            function createCardHTML(data) {
                 let html = `
                     <div class="bookstore-header">
                         <h3 class="bookstore-name">${data.name}</h3>
+                        ${data.subtitle ? `<p class="bookstore-subtitle">${data.subtitle}</p>` : ''}
                         ${data.address ? `<p class="bookstore-address">${data.address}</p>` : ''}
                     </div>
                 `;
 
-                if (data.tags && data.tags.length > 0) {
-                    html += '<div class="tag-container">';
-                    data.tags.forEach(tag => {
-                        html += `<span class="tag">${tag}</span>`;
-                    });
-                    html += '</div>';
-                }
-
-                if (data.reviews && data.reviews.length > 0) {
-                    html += '<div class="reviews-section">';
-                    data.reviews.forEach(review => {
-                        html += `
-                            <div class="review">
-                                <p class="review-text">"${review.text}"</p>
-                                <p class="reviewer">— ${review.reviewer}</p>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                }
-
-                html += '<div class="card-actions">';
-                
-                if (data.coordinates) {
-                    html += `<button class="btn btn-primary" onclick="locateOnMap(${index})">Locate on Map</button>`;
-                }
-                
                 if (data.googleMapsLink) {
-                    html += `<a href="${data.googleMapsLink}" target="_blank" class="btn btn-secondary">Open in Maps</a>`;
+                    html += `<div class="card-actions"><a href="${data.googleMapsLink}" target="_blank" class="btn btn-secondary">Open in Maps</a></div>`;
                 }
-                
-                html += '</div>';
 
-                element.innerHTML = html;
-                return { element };
+                return html;
             }
 
-            function createMarker(data, cardElement) {
+            function createMarker(data) {
                 const el = document.createElement('div');
                 el.className = 'custom-marker';
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openCard(data, el);
+                });
 
-                const marker = new mapboxgl.Marker({ element: el })
+                return new mapboxgl.Marker({ element: el })
                     .setLngLat(data.coordinates)
-                    .setPopup(
-                        new mapboxgl.Popup().setHTML(`
-                            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text-primary);">
-                                ${data.name}
-                            </h3>
-                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.75rem;">
-                                ${data.address || ''}
-                            </p>
-                            <button onclick="highlightFromMap('${data.name}')" style="
-                                background: var(--accent);
-                                color: white;
-                                border: none;
-                                padding: 0.5rem 0.75rem;
-                                font-size: 0.8125rem;
-                                cursor: pointer;
-                                border-radius: 4px;
-                                font-family: 'Inter', sans-serif;
-                            ">View details</button>
-                        `)
-                    )
                     .addTo(map);
-
-                return marker;
             }
-
-            function initFilters() {
-                // Search
-                const searchInput = document.getElementById('search-input');
-                const clearSearchBtn = document.getElementById('clear-search');
-
-                searchInput.addEventListener('input', (e) => {
-                    searchTerm = e.target.value;
-                    updateBookstoreList();
-                });
-
-                clearSearchBtn.addEventListener('click', () => {
-                    searchInput.value = '';
-                    searchTerm = '';
-                    updateBookstoreList();
-                    searchInput.focus();
-                });
-
-                // Tag filters
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        currentFilter = btn.dataset.filter;
-                        updateBookstoreList();
-                    });
-                });
-
-                // Location filters
-                document.querySelectorAll('.location-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        document.querySelectorAll('.location-btn').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        currentLocation = btn.dataset.area;
-                        updateBookstoreList();
-                    });
-                });
-
-                // Sort
-                document.getElementById('sort-select').addEventListener('change', (e) => {
-                    currentSort = e.target.value;
-                    updateBookstoreList();
-                });
-            }
-
-            function updateBookstoreList() {
-                const grid = document.getElementById('bookstore-grid');
-                const resultsCount = document.getElementById('results-count');
-                
-                // Filter
-                const filtered = bookstores.filter(bs => {
-                    const data = bs.data;
-                    
-                    // Tag filter
-                    const tagMatch = currentFilter === 'all' || 
-                        (data.tags && data.tags.includes(currentFilter));
-                    
-                    // Search filter
-                    const searchMatch = !searchTerm || 
-                        data.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        (data.address && data.address.toLowerCase().includes(searchTerm.toLowerCase()));
-                    
-                    // Location filter
-                    const locationMatch = currentLocation === 'all' || checkLocation(data.address, currentLocation);
-                    
-                    // Update marker visibility
-                    if (bs.marker) {
-                        bs.marker.getElement().style.display = (tagMatch && searchMatch && locationMatch) ? 'block' : 'none';
-                    }
-                    
-                    return tagMatch && searchMatch && locationMatch;
-                });
-
-                // Sort
-                filtered.sort((a, b) => {
-                    if (currentSort === 'name-asc') {
-                        return a.data.name.localeCompare(b.data.name);
-                    } else {
-                        return b.data.name.localeCompare(a.data.name);
-                    }
-                });
-
-                // Update grid
-                grid.innerHTML = '';
-                
-                if (filtered.length === 0) {
-                    grid.innerHTML = `
-                        <div class="no-results">
-                            <h3>No bookstores found</h3>
-                            <p>Try adjusting your filters or search terms.</p>
-                        </div>
-                    `;
-                } else {
-                    filtered.forEach(bs => {
-                        grid.appendChild(bs.element);
-                    });
-                }
-
-                // Update count
-                resultsCount.textContent = `Showing ${filtered.length} of ${bookstores.length} bookstores`;
-            }
-
-            function checkLocation(address, area) {
-                if (!address) return false;
-                const addr = address.toLowerCase();
-                
-                const areas = {
-                    east: ['e1', 'e2', 'e3', 'e5', 'e8', 'e14'],
-                    west: ['w1', 'w2', 'w6', 'w8', 'w11', 'sw3', 'sw6', 'sw7'],
-                    north: ['n1', 'n5', 'n10', 'nw1', 'nw3', 'nw5', 'nw6', 'nw11'],
-                    south: ['se1', 'se3', 'se5', 'se8', 'se14', 'se22', 'sw12'],
-                    central: ['wc1', 'wc2', 'ec1', 'ec2', 'ec3', 'ec4']
-                };
-                
-                return areas[area].some(code => addr.includes(code));
-            }
-
-            // Global functions for onclick handlers
-            window.locateOnMap = function(index) {
-                const bs = bookstores[index];
-                if (!bs || !bs.data.coordinates) return;
-
-                // Close all popups
-                markers.forEach(m => {
-                    if (m.getPopup().isOpen()) m.togglePopup();
-                });
-
-                // Fly to location
-                map.flyTo({
-                    center: bs.data.coordinates,
-                    zoom: 15,
-                    essential: true
-                });
-
-                // Highlight card
-                document.querySelectorAll('.bookstore-card').forEach(c => c.classList.remove('highlighted'));
-                bs.element.classList.add('highlighted');
-
-                // Open popup
-                setTimeout(() => {
-                    bs.marker.togglePopup();
-                }, 500);
-
-                // Scroll to map on mobile
-                if (window.innerWidth <= 768) {
-                    document.querySelector('.map-section').scrollIntoView({ behavior: 'smooth' });
-                }
-            };
-
-            window.highlightFromMap = function(name) {
-                const bs = bookstores.find(b => b.data.name === name);
-                if (bs) {
-                    document.querySelectorAll('.bookstore-card').forEach(c => c.classList.remove('highlighted'));
-                    bs.element.classList.add('highlighted');
-                    bs.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    setTimeout(() => {
-                        bs.element.classList.remove('highlighted');
-                    }, 3000);
-                }
-            };
         </script>
     </body>
 </html>
