@@ -42,36 +42,36 @@
                 height: 100svh;
             }
 
-            .bookstore-header {
-                margin-bottom: 1rem;
-            }
-
             .bookstore-name {
                 font-family: serif;
                 font-size: 1.5rem;
                 font-weight: 400;
                 color: var(--text-primary);
-                margin-bottom: 0.5rem;
                 line-height: 1.3;
+                margin-bottom: 0.25rem;
+                padding-right: 1.5rem;
             }
 
             .bookstore-subtitle {
                 font-family: serif;
                 color: var(--text-muted);
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.25rem;
             }
 
             .bookstore-address {
+                display: block;
                 font-size: 0.875rem;
                 color: var(--text-muted);
+                text-decoration: none;
             }
 
-            .bookstore-link {
-                display: inline-block;
-                margin-top: 1rem;
-                font-size: 0.875rem;
+            a.bookstore-address:hover {
                 color: var(--accent);
-                word-break: break-all;
+                text-decoration: underline;
+            }
+
+            .bookstore-address .arrow {
+                margin-left: 0.25em;
             }
 
             /* Bookstore Card */
@@ -85,7 +85,7 @@
                 background: var(--bg-primary);
                 border: 1px solid var(--border);
                 border-radius: 8px;
-                padding: 1.5rem;
+                padding: 1.25rem;
                 box-shadow: 0 4px 24px var(--shadow-strong);
                 z-index: 10;
             }
@@ -96,14 +96,14 @@
 
             .card-close {
                 position: absolute;
-                top: 0.5rem;
-                right: 0.5rem;
-                width: 2rem;
-                height: 2rem;
+                top: 0.625rem;
+                right: 0.625rem;
+                width: 1.75rem;
+                height: 1.75rem;
                 border: none;
                 background: transparent;
                 color: var(--text-muted);
-                font-size: 1.5rem;
+                font-size: 1.25rem;
                 line-height: 1;
                 cursor: pointer;
             }
@@ -1048,16 +1048,16 @@
             }
 
             function createCardHTML(data) {
-                let html = `
-                    <div class="bookstore-header">
-                        <h3 class="bookstore-name">${data.name}</h3>
-                        ${data.subtitle ? `<p class="bookstore-subtitle">${data.subtitle}</p>` : ''}
-                        ${data.address ? `<p class="bookstore-address">${data.address}</p>` : ''}
-                    </div>
-                `;
+                let html = `<h3 class="bookstore-name">${data.name}</h3>`;
 
-                if (data.googleMapsLink) {
-                    html += `<a href="${data.googleMapsLink}" target="_blank" class="bookstore-link">${data.googleMapsLink.replace(/^https?:\/\//, '')}</a>`;
+                if (data.subtitle) {
+                    html += `<p class="bookstore-subtitle">${data.subtitle}</p>`;
+                }
+
+                if (data.address && data.googleMapsLink) {
+                    html += `<a class="bookstore-address" href="${data.googleMapsLink}" target="_blank" rel="noopener" title="Open in Google Maps">${data.address}<span class="arrow">↗</span></a>`;
+                } else if (data.address) {
+                    html += `<p class="bookstore-address">${data.address}</p>`;
                 }
 
                 return html;
