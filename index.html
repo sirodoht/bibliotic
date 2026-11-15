@@ -8,16 +8,16 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.css" rel="stylesheet" />
         <style>
             :root {
-                --bg-primary: #faf8f5;
+                --bg-primary: #ffffff;
                 --bg-secondary: #f5f1eb;
                 --bg-tertiary: #efe9e1;
                 --text-primary: #1a1a1a;
                 --text-secondary: #4a4a4a;
                 --text-muted: #7a7a7a;
-                --accent: #8b4513;
+                --accent: #1a1a1a;
                 --accent-light: #a0522d;
                 --accent-pale: #d4a574;
-                --border: #e0d8cc;
+                --border: #dddddd;
                 --shadow: rgba(0, 0, 0, 0.06);
                 --shadow-strong: rgba(0, 0, 0, 0.1);
             }
@@ -79,7 +79,7 @@
                 position: fixed;
                 top: 16px;
                 left: 16px;
-                width: 360px;
+                width: 400px;
                 max-height: calc(100% - 32px);
                 overflow-y: auto;
                 background: var(--bg-primary);
@@ -90,7 +90,7 @@
                 z-index: 10;
             }
 
-            .card[hidden] {
+            .card-close[hidden] {
                 display: none;
             }
 
@@ -167,9 +167,12 @@
     </head>
     <body>
         <div id="map"></div>
-        <div id="card" class="card" hidden>
-            <button class="card-close" aria-label="Close">×</button>
-            <div id="card-content"></div>
+        <div id="card" class="card">
+            <button class="card-close" aria-label="Close" hidden>×</button>
+            <div id="card-content">
+                <h1 class="bookstore-name">londonbookmap.com</h1>
+                <p class="bookstore-subtitle">all london bookshops</p>
+            </div>
         </div>
 
         <script>
@@ -1054,15 +1057,19 @@
                 document.querySelector(".card-close").addEventListener("click", closeCard);
             }
 
+            let defaultCardHTML;
+
             function openCard(data, el) {
+                defaultCardHTML ??= document.getElementById("card-content").innerHTML;
                 document.getElementById("card-content").innerHTML = createCardHTML(data);
-                document.getElementById("card").hidden = false;
+                document.querySelector(".card-close").hidden = false;
                 document.querySelectorAll(".custom-marker.active").forEach(m => m.classList.remove("active"));
                 el.classList.add("active");
             }
 
             function closeCard() {
-                document.getElementById("card").hidden = true;
+                if (defaultCardHTML) document.getElementById("card-content").innerHTML = defaultCardHTML;
+                document.querySelector(".card-close").hidden = true;
                 document.querySelectorAll(".custom-marker.active").forEach(m => m.classList.remove("active"));
             }
 
@@ -1073,10 +1080,13 @@
                     html += `<p class="bookstore-subtitle">${data.subtitle}</p>`;
                 }
 
-                if (data.address && data.googleMapsLink) {
-                    html += `<a class="bookstore-address" href="${data.googleMapsLink}" target="_blank" rel="noopener" title="Open in Google Maps">${data.address}<span class="arrow">↗</span></a>`;
-                } else if (data.address) {
-                    html += `<p class="bookstore-address">${data.address}</p>`;
+                // Non-breaking space inside the postcode so it never splits across lines
+                const address = data.address?.replace(/([A-Z]{1,2}\d[A-Z\d]?) (\d[A-Z]{2})$/, "$1\u00a0$2");
+
+                if (address && data.googleMapsLink) {
+                    html += `<a class="bookstore-address" href="${data.googleMapsLink}" target="_blank" rel="noopener" title="Open in Google Maps">${address}<span class="arrow">↗</span></a>`;
+                } else if (address) {
+                    html += `<p class="bookstore-address">${address}</p>`;
                 }
 
                 return html;
