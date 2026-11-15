@@ -20,6 +20,25 @@
                 --border: #dddddd;
                 --shadow: rgba(0, 0, 0, 0.06);
                 --shadow-strong: rgba(0, 0, 0, 0.1);
+                --pin: #000000;
+                --pin-active: #000000;
+                --pin-border: #ffffff;
+                color-scheme: light;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg-primary: #1c1c1e;
+                    --text-primary: #f2f2f2;
+                    --text-muted: #a0a0a0;
+                    --accent: #ffffff;
+                    --border: #3a3a3c;
+                    --shadow-strong: rgba(0, 0, 0, 0.5);
+                    --pin: #bbbbbb;
+                    --pin-active: #ffffff;
+                    --pin-border: #000000;
+                    color-scheme: dark;
+                }
             }
 
             * {
@@ -129,12 +148,42 @@
                 background-size: 40px;
             }
 
+            /* Map controls in dark mode */
+            @media (prefers-color-scheme: dark) {
+                .mapboxgl-ctrl-group {
+                    background: var(--bg-primary);
+                    box-shadow: 0 0 0 2px var(--border);
+                }
+
+                .mapboxgl-ctrl-group button + button {
+                    border-top-color: var(--border);
+                }
+
+                .mapboxgl-ctrl-group button:not(:disabled):hover {
+                    background-color: rgba(255, 255, 255, 0.08);
+                }
+
+                /* Invert the dark icons to light; hue-rotate keeps the blue of the active "Near me" icon */
+                .mapboxgl-ctrl-icon,
+                .mapboxgl-ctrl-attrib-button {
+                    filter: invert(1) hue-rotate(180deg);
+                }
+
+                .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+                    background: rgba(0, 0, 0, 0.5);
+                }
+
+                .mapboxgl-ctrl-attrib a {
+                    color: rgba(255, 255, 255, 0.75);
+                }
+            }
+
             /* Custom Marker */
             .custom-marker {
                 width: 14px;
                 height: 14px;
-                background: #000;
-                border: 2px solid white;
+                background: var(--pin);
+                border: 2px solid var(--pin-border);
                 border-radius: 50%;
                 cursor: pointer;
                 box-shadow: 0 1px 4px var(--shadow-strong);
@@ -148,6 +197,7 @@
             }
 
             .custom-marker.active {
+                background: var(--pin-active);
                 width: 22px;
                 height: 22px;
                 border-width: 3px;
@@ -1035,15 +1085,23 @@
             function initMap() {
                 mapboxgl.accessToken = "pk.eyJ1Ijoic2lyb2RvaHQiLCJhIjoiY203aXlsMHY1MDFtMDJrc2FpM2M0bXJyNyJ9.ymB7vRZzN8H6R1xTPKJfNg";
 
+                const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+                const mapStyle = () => darkQuery.matches
+                    ? "mapbox://styles/mapbox/dark-v10"
+                    : "mapbox://styles/mapbox/light-v10";
+
                 map = new mapboxgl.Map({
                     container: "map",
-                    style: "mapbox://styles/mapbox/light-v10",
+                    style: mapStyle(),
                     center: [-0.12, 51.515],
                     zoom: 12.5,
                     locale: {
                         "GeolocateControl.FindMyLocation": "Near me",
                     },
                 });
+
+                // Follow the system light/dark setting when it changes
+                darkQuery.addEventListener("change", () => map.setStyle(mapStyle()));
 
                 map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
                 map.addControl(new mapboxgl.GeolocateControl({
