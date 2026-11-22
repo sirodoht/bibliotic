@@ -395,13 +395,38 @@
                 </div>
             </div>
 
-            <!-- Add news here with a YYYY-MM-DD datetime. Items expire after that date in London. -->
+            <!-- Add news here with a YYYY-MM-DD datetime. Items expire after that date in London.
+                 For multi-day events, set data-expires on the li to the final date. -->
             <div id="news" class="news-panel" hidden>
                 <button class="news-toggle" type="button" aria-expanded="false" aria-controls="news-list">News and events</button>
                 <ul id="news-list" aria-label="Latest London bookshop news and events">
                     <li>
+                        <time datetime="2026-11-24">24 Nov · 5pm · Cecil Court</time>
+                        <a href="https://www.watkinsbooks.com/event-details/esoteric-mythology-ike-baker" target="_blank" rel="noopener">Ike Baker discusses Esoteric Mythology at Watkins</a>
+                    </li>
+                    <li data-expires="2026-12-23">
+                        <time datetime="2026-11-24">24 Nov–23 Dec · Bloomsbury</time>
+                        <a href="https://theatlantisbookshop.com/events/event/the-billy-chainsaw-exhibition/" target="_blank" rel="noopener">Billy Chainsaw exhibition at Atlantis: screen prints exploring Aleister Crowley’s cultural influence</a>
+                    </li>
+                    <li>
+                        <time datetime="2026-11-25">25 Nov · 7pm · Bloomsbury</time>
+                        <a href="https://www.eventbrite.co.uk/e/rebecca-tamas-malcolm-gaskill-the-book-of-mysteries-tickets-2002713629377" target="_blank" rel="noopener">Rebecca Tamás and Malcolm Gaskill: The Book of Mysteries at London Review Bookshop</a>
+                    </li>
+                    <li>
                         <time datetime="2026-11-26">26 Nov · Bloomsbury</time>
                         <a href="https://www.eventbrite.co.uk/e/lrb-45s-listening-bar-tickets-2004652989054" target="_blank" rel="noopener">Poetry on vinyl at London Review Bookshop</a>
+                    </li>
+                    <li>
+                        <time datetime="2026-11-27">27 Nov · 7:15pm · Chelsea</time>
+                        <a href="https://www.bookbaruk.com/event-details/bookbar-presents-an-evening-with-louise-kennedy" target="_blank" rel="noopener">An evening with Louise Kennedy discussing Stations at BookBar</a>
+                    </li>
+                    <li>
+                        <time datetime="2026-11-30">30 Nov · Islington</time>
+                        <a href="https://www.bookbaruk.com/event-details/on-eurotrash-with-colin-teevan" target="_blank" rel="noopener">Colin Teevan on Eurotrash at BookBar</a>
+                    </li>
+                    <li>
+                        <time datetime="2026-12-03">3 Dec · 5–6pm · Cecil Court</time>
+                        <a href="https://www.watkinsbooks.com/event-details/london-lovecraft-press-launch-tl-wiswell" target="_blank" rel="noopener">London Lovecraft Press launch with TL Wiswell at Watkins</a>
                     </li>
                     <li>
                         <time datetime="2026-11-09">9 Nov · Cecil Court</time>
@@ -1427,7 +1452,8 @@
                 const today = `${date.year}-${date.month}-${date.day}`;
                 const items = [...document.querySelectorAll("#news-list > li")];
                 items.forEach(item => {
-                    item.hidden = item.querySelector("time").dateTime < today;
+                    const expires = item.dataset.expires ?? item.querySelector("time").dateTime;
+                    item.hidden = expires < today;
                 });
                 document.getElementById("news").hidden = document.getElementById("search").hidden
                     || !items.some(item => !item.hidden);
