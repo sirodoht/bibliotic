@@ -293,6 +293,66 @@
                     border-radius: 50%;
                 }
             }
+
+            /* News sits to the left of the map controls and above attribution. */
+            .news-panel {
+                position: fixed;
+                right: max(60px, calc(env(safe-area-inset-right) + 48px));
+                bottom: calc(32px + env(safe-area-inset-bottom));
+                width: max-content;
+                max-width: min(300px, calc(100% - max(60px, calc(env(safe-area-inset-right) + 48px)) - 12px));
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                box-shadow: 0 4px 24px var(--shadow-strong);
+                z-index: 9;
+                font-size: 0.8125rem;
+                line-height: 1.45;
+            }
+
+            .news-panel[open] {
+                width: 300px;
+            }
+
+            .news-panel summary {
+                min-height: 44px;
+                padding: 0.75rem;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            .news-panel summary:focus-visible,
+            .news-panel a:focus-visible {
+                outline: 2px solid var(--accent);
+                outline-offset: -2px;
+            }
+
+            .news-panel ul {
+                list-style: none;
+                max-height: 40vh;
+                max-height: 40svh;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                border-top: 1px solid var(--border);
+            }
+
+            .news-panel li {
+                padding: 0.625rem 0.75rem;
+            }
+
+            .news-panel li + li {
+                border-top: 1px solid var(--border);
+            }
+
+            .news-panel a {
+                color: inherit;
+                text-underline-offset: 0.15em;
+            }
+
+            .news-panel time {
+                display: block;
+            }
         </style>
     </head>
     <body>
@@ -309,6 +369,33 @@
                 <ul id="search-results" class="search-results" hidden></ul>
             </div>
         </div>
+
+        <!-- Update these links and dates when refreshing the news. -->
+        <details class="news-panel">
+            <summary>Bookshop news</summary>
+            <ul aria-label="Latest London bookshop news">
+                <li>
+                    <time datetime="2026-11-26">26 Nov · Bloomsbury</time>
+                    <a href="https://www.eventbrite.co.uk/e/lrb-45s-listening-bar-tickets-2004652989054">Poetry on vinyl at London Review Bookshop</a>
+                </li>
+                <li>
+                    <time datetime="2026-11-09">9 Nov · Cecil Court</time>
+                    <a href="https://goldsborobooks.com/pages/first-edition-cafe-bookshop">Goldsboro opens a bookshop and wine bar</a>
+                </li>
+                <li>
+                    <time datetime="2026-11-07">7 Nov · Willesden Green</time>
+                    <a href="https://www.nwlondoner.co.uk/news/12112026-londons-smallest-bookshop-opens-at-willesden-green-tube">TINY opens inside a Tube station</a>
+                </li>
+                <li>
+                    <time datetime="2026-11-07">7 Nov · Shepherd’s Bush</time>
+                    <a href="https://www.fulhamwire.co.uk/green-ray-books-askew-road/">Green Ray Books opens on Askew Road</a>
+                </li>
+                <li>
+                    <time datetime="2026-11-04">4 Nov · Fitzrovia</time>
+                    <a href="https://persephonebooks.co.uk/pages/our-london-shop">Persephone Books returns to London</a>
+                </li>
+            </ul>
+        </details>
 
         <script>
             const DATA = {
