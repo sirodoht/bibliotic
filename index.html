@@ -95,20 +95,29 @@
                 margin-left: 0.25em;
             }
 
-            /* Bookstore Card */
-            .card {
+            /* Left column: the main card, with the news panel under it */
+            .sidebar {
                 position: fixed;
                 top: 16px;
                 left: 16px;
                 width: 400px;
                 max-height: calc(100% - 32px);
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                z-index: 10;
+            }
+
+            /* Bookstore Card */
+            .card {
+                position: relative;
+                min-height: 0;
                 overflow-y: auto;
                 background: var(--bg-primary);
                 border: 1px solid var(--border);
                 border-radius: 8px;
                 padding: 1.25rem;
                 box-shadow: 0 4px 24px var(--shadow-strong);
-                z-index: 10;
             }
 
             .card-close[hidden] {
@@ -134,7 +143,7 @@
             }
 
             @media (max-width: 480px) {
-                .card {
+                .sidebar {
                     width: auto;
                     right: 16px;
                 }
@@ -294,35 +303,51 @@
                 }
             }
 
-            /* News sits to the left of the map controls and above attribution. */
+            /* News sits under the main card and hides while a bookshop is selected. */
             .news-panel {
-                position: fixed;
-                right: max(60px, calc(env(safe-area-inset-right) + 48px));
-                bottom: calc(32px + env(safe-area-inset-bottom));
-                width: max-content;
-                max-width: min(300px, calc(100% - max(60px, calc(env(safe-area-inset-right) + 48px)) - 12px));
+                flex: none;
                 background: var(--bg-primary);
                 color: var(--text-primary);
                 border: 1px solid var(--border);
                 border-radius: 8px;
                 box-shadow: 0 4px 24px var(--shadow-strong);
-                z-index: 9;
                 font-size: 0.8125rem;
                 line-height: 1.45;
             }
 
-            .news-panel[open] {
-                width: 300px;
+            .news-panel[hidden] {
+                display: none;
             }
 
-            .news-panel summary {
+            .news-toggle {
+                display: none;
+                width: 100%;
                 min-height: 44px;
                 padding: 0.75rem;
-                font-weight: 600;
+                border: none;
+                border-radius: inherit;
+                background: transparent;
+                color: inherit;
+                font: inherit;
+                text-align: left;
                 cursor: pointer;
             }
 
-            .news-panel summary:focus-visible,
+            @media (max-width: 480px) {
+                .news-toggle {
+                    display: block;
+                }
+
+                .news-toggle[aria-expanded="false"] + ul {
+                    display: none;
+                }
+
+                .news-toggle[aria-expanded="true"] + ul {
+                    border-top: 1px solid var(--border);
+                }
+            }
+
+            .news-toggle:focus-visible,
             .news-panel a:focus-visible {
                 outline: 2px solid var(--accent);
                 outline-offset: -2px;
@@ -334,14 +359,13 @@
                 max-height: 40svh;
                 overflow-y: auto;
                 overscroll-behavior: contain;
-                border-top: 1px solid var(--border);
             }
 
             .news-panel li {
                 padding: 0.625rem 0.75rem;
             }
 
-            .news-panel li + li {
+            .news-panel li:not([hidden]) ~ li:not([hidden]) {
                 border-top: 1px solid var(--border);
             }
 
@@ -357,45 +381,47 @@
     </head>
     <body>
         <div id="map"></div>
-        <div id="card" class="card">
-            <button class="card-close" aria-label="Close" hidden>×</button>
-            <div id="card-content">
-                <h1 class="bookstore-name">londonbookmap.com</h1>
-                <p class="bookstore-subtitle">all london bookshops</p>
+        <div id="sidebar" class="sidebar">
+            <div id="card" class="card">
+                <button class="card-close" aria-label="Close" hidden>×</button>
+                <div id="card-content">
+                    <h1 class="bookstore-name">londonbookmap.com</h1>
+                    <p class="bookstore-subtitle">all london bookshops</p>
+                </div>
+                <div id="search" class="search">
+                    <input id="search-input" class="search-input" type="search" placeholder="Search bookshops" aria-label="Search bookshops" autocomplete="off" spellcheck="false" />
+                    <p id="search-count" class="search-count" aria-live="polite" hidden></p>
+                    <ul id="search-results" class="search-results" hidden></ul>
+                </div>
             </div>
-            <div id="search" class="search">
-                <input id="search-input" class="search-input" type="search" placeholder="Search bookshops" aria-label="Search bookshops" autocomplete="off" spellcheck="false" />
-                <p id="search-count" class="search-count" aria-live="polite" hidden></p>
-                <ul id="search-results" class="search-results" hidden></ul>
+
+            <!-- Add news here with a YYYY-MM-DD datetime. Items expire after that date in London. -->
+            <div id="news" class="news-panel" hidden>
+                <button class="news-toggle" type="button" aria-expanded="false" aria-controls="news-list">News and events</button>
+                <ul id="news-list" aria-label="Latest London bookshop news and events">
+                    <li>
+                        <time datetime="2026-11-26">26 Nov · Bloomsbury</time>
+                        <a href="https://www.eventbrite.co.uk/e/lrb-45s-listening-bar-tickets-2004652989054" target="_blank" rel="noopener">Poetry on vinyl at London Review Bookshop</a>
+                    </li>
+                    <li>
+                        <time datetime="2026-11-09">9 Nov · Cecil Court</time>
+                        <a href="https://goldsborobooks.com/pages/first-edition-cafe-bookshop" target="_blank" rel="noopener">Goldsboro opens a bookshop and wine bar</a>
+                    </li>
+                    <li>
+                        <time datetime="2026-11-07">7 Nov · Willesden Green</time>
+                        <a href="https://www.nwlondoner.co.uk/news/12112026-londons-smallest-bookshop-opens-at-willesden-green-tube" target="_blank" rel="noopener">TINY opens inside a Tube station</a>
+                    </li>
+                    <li>
+                        <time datetime="2026-11-07">7 Nov · Shepherd’s Bush</time>
+                        <a href="https://www.fulhamwire.co.uk/green-ray-books-askew-road/" target="_blank" rel="noopener">Green Ray Books opens on Askew Road</a>
+                    </li>
+                    <li>
+                        <time datetime="2026-11-04">4 Nov · Fitzrovia</time>
+                        <a href="https://persephonebooks.co.uk/pages/our-london-shop" target="_blank" rel="noopener">Persephone Books returns to London</a>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <!-- Update these links and dates when refreshing the news. -->
-        <details class="news-panel">
-            <summary>Bookshop news</summary>
-            <ul aria-label="Latest London bookshop news">
-                <li>
-                    <time datetime="2026-11-26">26 Nov · Bloomsbury</time>
-                    <a href="https://www.eventbrite.co.uk/e/lrb-45s-listening-bar-tickets-2004652989054">Poetry on vinyl at London Review Bookshop</a>
-                </li>
-                <li>
-                    <time datetime="2026-11-09">9 Nov · Cecil Court</time>
-                    <a href="https://goldsborobooks.com/pages/first-edition-cafe-bookshop">Goldsboro opens a bookshop and wine bar</a>
-                </li>
-                <li>
-                    <time datetime="2026-11-07">7 Nov · Willesden Green</time>
-                    <a href="https://www.nwlondoner.co.uk/news/12112026-londons-smallest-bookshop-opens-at-willesden-green-tube">TINY opens inside a Tube station</a>
-                </li>
-                <li>
-                    <time datetime="2026-11-07">7 Nov · Shepherd’s Bush</time>
-                    <a href="https://www.fulhamwire.co.uk/green-ray-books-askew-road/">Green Ray Books opens on Askew Road</a>
-                </li>
-                <li>
-                    <time datetime="2026-11-04">4 Nov · Fitzrovia</time>
-                    <a href="https://persephonebooks.co.uk/pages/our-london-shop">Persephone Books returns to London</a>
-                </li>
-            </ul>
-        </details>
 
         <script>
             const DATA = {
@@ -1363,6 +1389,7 @@
             const entries = [];
 
             document.addEventListener('DOMContentLoaded', () => {
+                initNews();
                 initMap();
                 DATA.bookstores.forEach(data => {
                     if (!data.coordinates) return;
@@ -1375,6 +1402,36 @@
                 });
                 initSearch();
             });
+
+            function initNews() {
+                refreshNews();
+                setInterval(refreshNews, 60_000);
+                document.addEventListener("visibilitychange", refreshNews);
+                window.addEventListener("pageshow", refreshNews);
+
+                const toggle = document.querySelector(".news-toggle");
+                toggle.addEventListener("click", () => {
+                    const expanded = toggle.getAttribute("aria-expanded") !== "true";
+                    toggle.setAttribute("aria-expanded", String(expanded));
+                });
+            }
+
+            function refreshNews() {
+                const parts = new Intl.DateTimeFormat("en-GB", {
+                    timeZone: "Europe/London",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                }).formatToParts(new Date());
+                const date = Object.fromEntries(parts.map(part => [part.type, part.value]));
+                const today = `${date.year}-${date.month}-${date.day}`;
+                const items = [...document.querySelectorAll("#news-list > li")];
+                items.forEach(item => {
+                    item.hidden = item.querySelector("time").dateTime < today;
+                });
+                document.getElementById("news").hidden = document.getElementById("search").hidden
+                    || !items.some(item => !item.hidden);
+            }
 
             function initMap() {
                 mapboxgl.accessToken = "pk.eyJ1Ijoic2lyb2RvaHQiLCJhIjoiY203aXlsMHY1MDFtMDJrc2FpM2M0bXJyNyJ9.ymB7vRZzN8H6R1xTPKJfNg";
@@ -1416,6 +1473,7 @@
                 document.getElementById("card-content").innerHTML = createCardHTML(data);
                 document.querySelector(".card-close").hidden = false;
                 document.getElementById("search").hidden = true;
+                document.getElementById("news").hidden = true;
                 document.querySelectorAll(".custom-marker.active").forEach(m => m.classList.remove("active"));
                 el.classList.add("active");
             }
@@ -1424,6 +1482,7 @@
                 if (defaultCardHTML) document.getElementById("card-content").innerHTML = defaultCardHTML;
                 document.querySelector(".card-close").hidden = true;
                 document.getElementById("search").hidden = false;
+                refreshNews();
                 document.querySelectorAll(".custom-marker.active").forEach(m => m.classList.remove("active"));
             }
 
@@ -1591,9 +1650,9 @@
                 });
             }
 
-            // How much of the map the card covers: its right edge on wide screens, its bottom edge on phones
+            // How much of the map the card and news cover: their right edge on wide screens, their bottom edge on phones
             function cardInset() {
-                const rect = document.getElementById("card").getBoundingClientRect();
+                const rect = document.getElementById("sidebar").getBoundingClientRect();
                 return window.matchMedia("(max-width: 480px)").matches
                     ? { top: rect.bottom, left: 0 }
                     : { top: 0, left: rect.right };
